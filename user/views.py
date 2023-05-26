@@ -32,16 +32,15 @@ class RegisterAPIView(CreateAPIView):
             responseData = sms.send_message(
                 {
                     "from": "Vonage APIs",
-                    "to": "998997255003",
-                    # "to": "998998024954",
                     # "to": "998900325312",
-                    "text": "Siz kazyolmisiz??",
+                    "text": "Test message",
                 }
             )
             if responseData["messages"][0]["status"] == "0":
                 print("Message sent successfully.")
             else:
                 print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
+
 
             return Response(self.get_tokens_for_user(user), status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
