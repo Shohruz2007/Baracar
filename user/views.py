@@ -6,7 +6,7 @@ from rest_framework.generics import CreateAPIView
 from django.contrib.auth import get_user_model, authenticate, login
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from baracar.permissions import IsAdminUserOrReadOnly
 
 
@@ -64,10 +64,21 @@ class LoginAPIView(generics.GenericAPIView):
         password = data.get('password')
         user = authenticate(username=username, password=password)
 
+class AdminLoginAPIView(generics.GenericAPIView):
+    queryset = CustomUser.objects.all()
+    serializer_class = LoginSerializer
+    permission_classes = (AllowAny,)
+    http_method_names = ['post']
 
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        data = serializer.data
+        username = data.get('username')
+        password = data.get('password')
+        user = authenticate(username=username, password=password)
 
-
-        if user:
+        if user.is_staff:
             login(request, user)
             return Response(self.get_tokens_for_user(user), status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
@@ -76,10 +87,16 @@ class LoginAPIView(generics.GenericAPIView):
         refresh = RefreshToken.for_user(user)
         return {'refresh': str(refresh), 'access': str(refresh.access_token)}
 
-class UserAPIView(viewsets.ModelViewSet):
+class AdminUserAPIView(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     queryset = CustomUser.objects.all()
     permission_classes = [IsAdminUser]
+
+class UserAPIView(viewsets.ModelViewSet):
+    serializer_class = UserSerializer
+    queryset = CustomUser.objects.all()
+    http_method_names = ['get', 'put']
+    permission_classes = [IsAuthenticated]
 
 
 class AdressAPIView(viewsets.ModelViewSet):
