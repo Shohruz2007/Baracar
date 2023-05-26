@@ -32,6 +32,7 @@ twilio==8.2.1
 typing_extensions==4.6.1
 urllib3==2.0.2
 vonage==3.5.1
+whitenoise==6.4.0
 wrapt==1.15.0
 yarg==0.1.9
 yarl==1.9.2
