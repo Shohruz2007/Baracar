@@ -8,11 +8,16 @@ from django.contrib.auth.models import AbstractUser
 class CustomUser(AbstractUser):
     image = models.ImageField(upload_to='Users', null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
-    phone = models.CharField(max_length=13, null=True, blank=True)
+    phone = models.CharField(max_length=13, unique=True)
     birthday = models.DateField(null=True, blank=True)
     passport_series = models.CharField(max_length=3, null=True, blank=True)
     passport_number = models.IntegerField(null=True, blank=True)
     verify_code = models.IntegerField(null=True, blank=True)
+
+    ordering = ('phone',)
+
+
+    USERNAME_FIELD = "phone"
 
     @property
     def generate_code(self):

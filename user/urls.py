@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework import routers
 
-from .views import RegisterAPIView, UserAPIView, LoginAPIView, AdminUserAPIView, AdressAPIView, AdminLoginAPIView
+from .views import RegisterAPIView, UserAPIView, LoginAPIView, AdminUserAPIView, AdressAPIView
 
 
 router = routers.DefaultRouter()
@@ -12,6 +12,5 @@ router.register(r'adress', AdressAPIView, basename='adress')
 urlpatterns = [
     path('register/', RegisterAPIView.as_view()),
     path('login/', LoginAPIView.as_view()),
-    path('admin_login/', AdminLoginAPIView.as_view()),
     path('', include(router.urls)),
 ]
