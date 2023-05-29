@@ -27,19 +27,22 @@ class RegisterAPIView(CreateAPIView):
             data = serializer.data
             user = CustomUser(id = data['id'])
 
-            client = vonage.Client(key="36c0b7f0", secret="PuT19VQxc6sQYNLn")
-            sms = vonage.Sms(client)
-            responseData = sms.send_message(
-                {
-                    "from": "Vonage APIs",
-                    # "to": "998900325312",
-                    "text": "Test message",
-                }
-            )
-            if responseData["messages"][0]["status"] == "0":
-                print("Message sent successfully.")
-            else:
-                print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
+
+
+            # client = vonage.Client(key="36c0b7f0", secret="PuT19VQxc6sQYNLn")
+            # sms = vonage.Sms(client)
+            # responseData = sms.send_message(
+            #     {
+            #         "from": "Vonage APIs",
+            #         "to": "998900325312",
+            #         "text": "Test message",
+            #     }
+            # )
+            # if responseData["messages"][0]["status"] == "0":
+            #     print("Message sent successfully.")
+            # else:
+            #     print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
+
 
 
             return Response(self.get_tokens_for_user(user), status=status.HTTP_201_CREATED)
