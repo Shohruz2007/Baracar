@@ -27,7 +27,7 @@ class RegisterAPIView(CreateAPIView):
             data = serializer.data
             user = CustomUser(id = data['id'])
 
-
+            print(serializer.data)
 
             # client = vonage.Client(key="36c0b7f0", secret="PuT19VQxc6sQYNLn")
             # sms = vonage.Sms(client)
@@ -42,8 +42,6 @@ class RegisterAPIView(CreateAPIView):
             #     print("Message sent successfully.")
             # else:
             #     print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
-
-
 
             return Response(self.get_tokens_for_user(user), status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)

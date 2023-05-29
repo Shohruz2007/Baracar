@@ -6,7 +6,7 @@ import django.contrib.auth.password_validation as validators
 class RegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'phone', 'password']
+        fields = ['id', 'username', 'phone', 'password', 'is_staff']
 
     def validate(self, data):
         user = CustomUser(**data)
