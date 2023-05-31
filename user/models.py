@@ -14,17 +14,18 @@ class CustomUser(AbstractUser):
     passport_number = models.IntegerField(null=True, blank=True)
     verify_code = models.IntegerField(null=True, blank=True)
 
-    ordering = ('phone',)
+    ordering = ('phone',)  # phone field is on username field's place
 
-
+    REQUIRED_FIELDS = ['username']  # for creating superuser
     USERNAME_FIELD = "phone"
 
     @property
-    def generate_code(self):
+    def generate_code(self):  # generating verify_code by using python random
         total = string.digits
         verify_code = "".join(random.sample(total, 6))
         self.verify_code = verify_code
         self.save()
+        return verify_code
 
     def __str__(self):
         return self.username

@@ -18,10 +18,25 @@ class SeriesAPIView(viewsets.ModelViewSet):
     serializer_class = SeriesSerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
+    def create(self, request, *args, **kwargs):
+        serializer = SeriesPostSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
 class PositionAPIView(viewsets.ModelViewSet):
     queryset = CarPosition.objects.all()
     serializer_class = PositionSerializer
     permission_classes = [IsAdminUserOrReadOnly]
+
+
+    def create(self, request, *args, **kwargs):
+        serializer = PositionPostSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 class FuelSortAPIView(viewsets.ModelViewSet):
     queryset = CarFuelSort.objects.all()
@@ -76,6 +91,14 @@ class CarAPIView(viewsets.ModelViewSet):
         car.save()
         return Response(serializer.data)
 
+
+    def create(self, request, *args, **kwargs):
+        serializer = CarPostSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
 class DefectImageAPIView(viewsets.ModelViewSet):
     queryset = CarDefectImages.objects.all()
     serializer_class = DefectImageSerializer
@@ -97,6 +120,14 @@ class DefectAPIView(viewsets.ModelViewSet):
     queryset = CarDefect.objects.all()
     serializer_class = DefectSerializer
     permission_classes = [IsAdminUserOrReadOnly]
+
+
+    def create(self, request, *args, **kwargs):
+        serializer = DefectPostSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class CommentAPIView(viewsets.ModelViewSet):

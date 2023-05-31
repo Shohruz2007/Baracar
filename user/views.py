@@ -1,4 +1,3 @@
-import vonage
 from django.shortcuts import render
 from rest_framework import viewsets, status, generics
 from rest_framework.response import Response
@@ -27,26 +26,25 @@ class RegisterAPIView(CreateAPIView):
             data = serializer.data
             user = CustomUser(id = data['id'])
 
-            print(serializer.data)
 
-            # client = vonage.Client(key="36c0b7f0", secret="PuT19VQxc6sQYNLn")
-            # sms = vonage.Sms(client)
-            # responseData = sms.send_message(
-            #     {
-            #         "from": "Vonage APIs",
-            #         "to": "998900325312",
-            #         "text": "Test message",
-            #     }
+            # from twilio.rest import Client  #sms message sending via twilio
+            #
+            # account_sid = ''
+            # auth_token = ''
+            # client = Client(account_sid, auth_token)
+            #
+            # message = client.messages.create(
+            #     from_='',
+            #     body=f"{serializer.data['verify_code']}",
+            #     to=''
             # )
-            # if responseData["messages"][0]["status"] == "0":
-            #     print("Message sent successfully.")
-            # else:
-            #     print(f"Message failed with error: {responseData['messages'][0]['error-text']}")
+
+            # print(message.sid)
 
             return Response(self.get_tokens_for_user(user), status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    def get_tokens_for_user(self, user):
+    def get_tokens_for_user(self, user):  # getting JWT tokens
         refresh = RefreshToken.for_user(user)
         return {'refresh': str(refresh), 'access': str(refresh.access_token)}
 
@@ -69,7 +67,7 @@ class LoginAPIView(generics.GenericAPIView):
             return Response(self.get_tokens_for_user(user), status=status.HTTP_200_OK)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-    def get_tokens_for_user(self, user):
+    def get_tokens_for_user(self, user):  # getting JWT token and is_staff boolean
         refresh = RefreshToken.for_user(user)
         return {'refresh': str(refresh), 'access': str(refresh.access_token), 'is_staff':user.is_staff}
 
@@ -88,4 +86,4 @@ class UserAPIView(viewsets.ModelViewSet):
 class AdressAPIView(viewsets.ModelViewSet):
     serializer_class = AdressSerializer
     queryset = Adress.objects.all()
-    permission_classes = [IsAdminUserOrReadOnly]
+    permission_classes = [IsAdminUserOrReadOnly]  # from custom permission checking admin

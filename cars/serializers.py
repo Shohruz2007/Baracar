@@ -14,21 +14,35 @@ class SeriesSerializer(serializers.ModelSerializer):
         model = CarSeries
         fields = ['id','name','model']
 
+class SeriesPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CarSeries
+        fields = ['name','model']
+
+
+
 class PositionSerializer(serializers.ModelSerializer):
     series = SeriesSerializer()
     class Meta:
         model = CarPosition
         fields = ['id','name','series']
 
+class PositionPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CarPosition
+        fields = ['name','series']
+
+
+
 class FuelSortSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarFuelSort
-        fields = ['name']
+        fields = "__all__"
 
 class GearBoxSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarGearbox
-        fields = ['name']
+        fields = "__all__"
 
 class GarantSerializer(serializers.ModelSerializer):
     class Meta:
@@ -43,7 +57,7 @@ class BranchSerializer(serializers.ModelSerializer):
 class CarImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarImages
-        fields = ['image']
+        fields = "__all__"
 
 class CarSerializer(serializers.ModelSerializer):
     position = PositionSerializer()
@@ -55,6 +69,13 @@ class CarSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
         fields = '__all__'
+
+class CarPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Car
+        fields = '__all__'
+
+
 
 class DefectImageSerializer(serializers.ModelSerializer):
 
@@ -68,10 +89,22 @@ class DefectSerializer(serializers.ModelSerializer):
         model = CarDefect
         fields = '__all__'
 
+class DefectPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CarDefect
+        fields = '__all__'
+
+
+
 class OrderSerializer(serializers.ModelSerializer):
     user = UserSerializer()
     car = CarSerializer()
     branch = BranchSerializer()
+    class Meta:
+        model = Order
+        fields = '__all__'
+
+class OrderPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = '__all__'

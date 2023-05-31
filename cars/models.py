@@ -62,12 +62,12 @@ class Car(models.Model):
     position = models.ForeignKey(CarPosition, on_delete=models.CASCADE)
     initial_price = models.FloatField(null=True, blank=True)
     price = models.FloatField()
-    sale = models.FloatField(default=0) # 0% = no sale
-    depozit = models.FloatField(null=True, blank=True)
-    fuel_consumption = models.FloatField()
+    sale = models.FloatField(default=0)  # 0% = no sale
+    depozit = models.FloatField(null=True, blank=True)  # 0 = no depozit
+    fuel_consumption = models.FloatField()  #
     fuel_sort = models.ForeignKey(CarFuelSort, on_delete=models.CASCADE)
     year = models.IntegerField()
-    distance = models.FloatField(default=0) # 0 = new car
+    distance = models.FloatField(default=0)  # 0 = new car
     gearbox = models.ForeignKey(CarGearbox, on_delete=models.CASCADE)
     engine = models.FloatField()
     colour = models.CharField(max_length=25)
@@ -76,9 +76,9 @@ class Car(models.Model):
     views = models.IntegerField(default=0)
     description = models.TextField()
     image = models.ManyToManyField(CarImages)
-    time_create = models.DateTimeField(auto_now_add=True, null=True)
-    time_update = models.DateTimeField(auto_now=True)
-    is_active = models.BooleanField(default=True)
+    time_create = models.DateTimeField(auto_now_add=True, null=True)  # time when car has created
+    time_update = models.DateTimeField(auto_now=True)  # time when car has updated
+    is_active = models.BooleanField(default=True)  # car is on sale or not
 
     def __str__(self):
         return self.name
