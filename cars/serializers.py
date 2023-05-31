@@ -9,7 +9,7 @@ class ModelSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class SeriesSerializer(serializers.ModelSerializer):
-    model = ModelSerializer()
+    model = ModelSerializer(read_only=True)
     class Meta:
         model = CarSeries
         fields = ['id','name','model']
@@ -18,7 +18,6 @@ class SeriesPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarSeries
         fields = ['name','model']
-
 
 
 class PositionSerializer(serializers.ModelSerializer):
@@ -47,7 +46,7 @@ class GearBoxSerializer(serializers.ModelSerializer):
 class GarantSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarGarantType
-        fields = ['name', 'time']
+        fields = ['id', 'name', 'time']
 
 class BranchSerializer(serializers.ModelSerializer):
     class Meta:

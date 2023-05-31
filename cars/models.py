@@ -54,7 +54,6 @@ class Branch(models.Model):
         return self.name
 
 class CarImages(models.Model):
-    # car = models.ForeignKey(Car, on_delete=models.CASCADE)
     image = models.ImageField(upload_to="CarImages")
 
 class Car(models.Model):

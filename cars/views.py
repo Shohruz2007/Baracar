@@ -1,4 +1,6 @@
-from django.http import HttpResponse
+from django.core.files.base import ContentFile
+import zipfile
+
 from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.response import Response
@@ -64,8 +66,8 @@ class ImageAPIView(viewsets.ModelViewSet):
     permission_classes = [IsAdminUserOrReadOnly]
 
     def create(self, request, *args, **kwargs):
+
         if request.data['image'].size > 5 * 1024 * 1024:
-            print(request.data['image'].size)
             return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
 
         serializer = self.get_serializer(data=request.data)
