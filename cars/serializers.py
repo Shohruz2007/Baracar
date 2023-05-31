@@ -56,7 +56,7 @@ class BranchSerializer(serializers.ModelSerializer):
 class CarImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarImages
-        fields = ['id','image']
+        fields = ['id', 'image', 'car']
 
 
 class CarSerializer(serializers.ModelSerializer):
@@ -65,7 +65,6 @@ class CarSerializer(serializers.ModelSerializer):
     gearbox = GearBoxSerializer()
     garant = GarantSerializer()
     branch = BranchSerializer()
-    image = CarImageSerializer(many=True)
     class Meta:
         model = Car
         fields = '__all__'

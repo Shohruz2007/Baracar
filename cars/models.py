@@ -53,8 +53,6 @@ class Branch(models.Model):
     def __str__(self):
         return self.name
 
-class CarImages(models.Model):
-    image = models.ImageField(upload_to="CarImages")
 
 class Car(models.Model):
     name = models.CharField(max_length=55)
@@ -74,7 +72,6 @@ class Car(models.Model):
     branch = models.ForeignKey(Branch, on_delete=models.SET_NULL, null=True, blank=True)
     views = models.IntegerField(default=0)
     description = models.TextField()
-    image = models.ManyToManyField(CarImages)
     time_create = models.DateTimeField(auto_now_add=True, null=True)  # time when car has created
     time_update = models.DateTimeField(auto_now=True)  # time when car has updated
     is_active = models.BooleanField(default=True)  # car is on sale or not
@@ -82,6 +79,9 @@ class Car(models.Model):
     def __str__(self):
         return self.name
 
+class CarImages(models.Model):
+    car = models.ForeignKey(Car, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to="CarImages")
 
 class CarDefectImages(models.Model):
     image = models.ImageField(upload_to="CarImages")
