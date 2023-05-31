@@ -1,3 +1,5 @@
+from io import BytesIO
+
 from django.core.files.base import ContentFile
 import zipfile
 
@@ -76,6 +78,8 @@ class ImageAPIView(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
 
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
 
 
 class CarAPIView(viewsets.ModelViewSet):
