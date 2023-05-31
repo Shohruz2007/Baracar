@@ -1,7 +1,7 @@
-from io import BytesIO
-
+import io
 from django.core.files.base import ContentFile
 import zipfile
+from PIL import Image
 
 from django.shortcuts import render
 from rest_framework import viewsets, status
@@ -62,12 +62,28 @@ class BranchAPIView(viewsets.ModelViewSet):
     serializer_class = BranchSerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
+
 class ImageAPIView(viewsets.ModelViewSet):
     queryset = CarImages.objects.all()
     serializer_class = CarImageSerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
     def create(self, request, *args, **kwargs):
+        # if request.data['folder']:
+        #
+        #     z = zipfile.ZipFile(request.data['folder'])
+        #     for i in range(len(z.namelist())):
+        #
+        #         file_in_zip = z.namelist()[i]
+        #         if (".jpeg" in file_in_zip or ".JPEG" in file_in_zip):
+        #             data = z.read(file_in_zip)
+        #             dataEnc = io.BytesIO(data)
+        #             img = Image.open(dataEnc)
+        #             print(img)
+        #         else:
+        #             return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
+
+
 
         if request.data['image'].size > 5 * 1024 * 1024:
             return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
@@ -76,9 +92,7 @@ class ImageAPIView(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
 
 
 
