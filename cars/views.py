@@ -84,6 +84,13 @@ class ImageAPIView(viewsets.ModelViewSet):
 
                     img = Image.open(dataEnc)
                     img.save(f"static/CarImages/{file_in_zip}")
+                    print(img)
+
+                    # serializer = self.get_serializer(data=request.data)
+                    # serializer.is_valid(raise_exception=True)
+                    # self.perform_create(serializer)
+                    # headers = self.get_success_headers(serializer.data)
+                    # return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
                 else:
                     return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
 
