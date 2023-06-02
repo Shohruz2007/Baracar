@@ -19,6 +19,7 @@ class CarSubcategory(admin.ModelAdmin):
 
 
 admin.site.register(Car)
+admin.site.register(CarHistory)
 admin.site.register(CarSeries)
 admin.site.register(CarPosition)
 admin.site.register(CarModel, ModelSeriesAdmin)
@@ -29,3 +30,4 @@ admin.site.register(Branch)
 admin.site.register(CarImages)
 admin.site.register(CarDefect)
 admin.site.register(CarDefectImages)
+admin.site.register(Comment)

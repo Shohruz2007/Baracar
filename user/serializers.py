@@ -30,6 +30,13 @@ class LoginSerializer(serializers.Serializer):
     phone = serializers.CharField(max_length=13)
     password = serializers.CharField(max_length=50)
 
+
+class ChangePasswordSerializer(serializers.Serializer):
+    model = CustomUser
+
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser

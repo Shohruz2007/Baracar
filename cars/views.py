@@ -30,6 +30,7 @@ class SeriesAPIView(viewsets.ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
+
 class PositionAPIView(viewsets.ModelViewSet):
     queryset = CarPosition.objects.all()
     serializer_class = PositionSerializer
@@ -69,43 +70,7 @@ class ImageAPIView(viewsets.ModelViewSet):
     serializer_class = CarImageSerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
-    def create(self, request, *args, **kwargs):
-        # print(request.data)
-        # if request.data['folder']:
-        #
-        #     z = zipfile.ZipFile(request.data['folder'])
-        #     for i in range(0, len(z.namelist()), 2):
-        #
-        #         file_in_zip = z.namelist()[i]
-        #         print(i)
-        #         print(file_in_zip)
-        #         if (".jpeg" in file_in_zip or ".JPEG" in file_in_zip):
-        #             data = z.read(file_in_zip)
-        #             dataEnc = io.BytesIO(data)
-        #
-        #             img = Image.open(dataEnc)
-        #             img.save(f"static/CarsImages/{file_in_zip}")
-        #
-        #             # print(CarsImages/"BMW 3-series 330I AWD Sport.jpeg")
-        #
-        #             from IPython.display import Image as IMage
-        #
-        #             image = IMage(url='static/CarsImages/BMW 3-series 330I AWD Sport.jpeg')
-        #             print(type(image))
-        #
-        #
-        #             image_data = dict(car=request.data['car'], image=image)
-        #             print(image_data)
-        #
-        #             serializer = self.get_serializer(data=image_data)
-        #             serializer.is_valid(raise_exception=True)
-        #             self.perform_create(serializer)
-        #             headers = self.get_success_headers(serializer.data)
-        #         else:
-        #             return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
-
-
-
+    def create(self, request, *args, **kwargs):  # limit image size
         if request.data['image'].size > 5 * 1024 * 1024:
             return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
 
@@ -127,14 +92,14 @@ class CarAPIView(viewsets.ModelViewSet):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         pk = kwargs.get("pk")
-        car = Car.objects.get(pk=pk)
+        car = Car.objects.get(pk=pk)  # counting views
         car.views += 1
         car.save()
         return Response(serializer.data)
 
 
     def create(self, request, *args, **kwargs):
-        serializer = CarPostSerializer(data=request.data)
+        serializer = CarPostSerializer(data=request.data)  # Use CarPostSerializer despite CarSerializer
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
@@ -152,7 +117,7 @@ class DefectImageAPIView(viewsets.ModelViewSet):
     serializer_class = DefectImageSerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
-    def create(self, request, *args, **kwargs):
+    def create(self, request, *args, **kwargs):  # limit image size
         if request.data['image'].size > 5 * 1024 * 1024:
             print(request.data['image'].size)
             return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)

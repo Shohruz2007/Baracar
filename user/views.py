@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import viewsets, status, generics
 from rest_framework.response import Response
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, UpdateAPIView
 from django.contrib.auth import get_user_model, authenticate, login
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -10,7 +10,7 @@ from baracar.permissions import IsAdminUserOrReadOnly
 
 
 from .models import CustomUser, Adress
-from .serializers import RegistrationSerializer, UserSerializer, LoginSerializer, AdressSerializer
+from .serializers import RegistrationSerializer, UserSerializer, LoginSerializer, AdressSerializer, ChangePasswordSerializer
 
 
 class RegisterAPIView(CreateAPIView):
@@ -70,6 +70,38 @@ class LoginAPIView(generics.GenericAPIView):
     def get_tokens_for_user(self, user):  # getting JWT token and is_staff boolean
         refresh = RefreshToken.for_user(user)
         return {'refresh': str(refresh), 'access': str(refresh.access_token), 'is_staff':user.is_staff}
+
+
+class ChangePasswordView(UpdateAPIView):
+        serializer_class = ChangePasswordSerializer
+        model = CustomUser
+        # permission_classes = (IsAuthenticated,)
+
+        def get_object(self, queryset=None):
+            obj = self.request.user
+            return obj
+
+        def update(self, request, *args, **kwargs):
+            self.object = self.get_object()
+            serializer = self.get_serializer(data=request.data)
+
+            if serializer.is_valid():
+                # Check old password
+                if not self.object.check_password(serializer.data.get("old_password")):
+                    return Response({"old_password": ["Wrong password."]}, status=status.HTTP_400_BAD_REQUEST)
+                # set_password also hashes the password that the user will get
+                self.object.set_password(serializer.data.get("new_password"))
+                self.object.save()
+                response = {
+                    'status': 'success',
+                    'code': status.HTTP_200_OK,
+                    'message': 'Password updated successfully',
+                    'data': []
+                }
+
+                return Response(response)
+
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class AdminUserAPIView(viewsets.ModelViewSet):
     serializer_class = UserSerializer
