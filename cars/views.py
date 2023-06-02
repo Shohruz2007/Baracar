@@ -69,19 +69,22 @@ class ImageAPIView(viewsets.ModelViewSet):
     permission_classes = [IsAdminUserOrReadOnly]
 
     def create(self, request, *args, **kwargs):
-        # if request.data['folder']:
-        #
-        #     z = zipfile.ZipFile(request.data['folder'])
-        #     for i in range(len(z.namelist())):
-        #
-        #         file_in_zip = z.namelist()[i]
-        #         if (".jpeg" in file_in_zip or ".JPEG" in file_in_zip):
-        #             data = z.read(file_in_zip)
-        #             dataEnc = io.BytesIO(data)
-        #             img = Image.open(dataEnc)
-        #             print(img)
-        #         else:
-        #             return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
+        if request.data['folder']:
+
+            z = zipfile.ZipFile(request.data['folder'])
+            for i in range(len(z.namelist())):
+
+                file_in_zip = z.namelist()[i]
+                if (".jpeg" in file_in_zip or ".JPEG" in file_in_zip):
+                    data = z.read(file_in_zip)
+                    dataEnc = io.BytesIO(data)
+                    print(dataEnc)
+
+                    img = Image.open(dataEnc)
+                    img.save("carimg.jpeg")
+                    print(img)
+                else:
+                    return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
 
 
 
