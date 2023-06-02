@@ -72,24 +72,25 @@ class ImageAPIView(viewsets.ModelViewSet):
         if request.data['folder']:
 
             z = zipfile.ZipFile(request.data['folder'])
-            for i in range(len(z.namelist())):
+            for i in range(0, len(z.namelist()), 2):
 
                 file_in_zip = z.namelist()[i]
+                print(i)
+                print(file_in_zip)
                 if (".jpeg" in file_in_zip or ".JPEG" in file_in_zip):
                     data = z.read(file_in_zip)
                     dataEnc = io.BytesIO(data)
                     print(dataEnc)
 
                     img = Image.open(dataEnc)
-                    img.save("carimg.jpeg")
-                    print(img)
+                    img.save(f"static/CarImages/{file_in_zip}")
                 else:
                     return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
 
 
 
-        if request.data['image'].size > 5 * 1024 * 1024:
-            return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
+        # if request.data['image'].size > 5 * 1024 * 1024:
+        #     return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)

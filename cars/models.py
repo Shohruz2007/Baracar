@@ -62,13 +62,13 @@ class Car(models.Model):
     sale = models.FloatField(default=0)  # 0% = no sale
     depozit = models.FloatField(null=True, blank=True)  # 0 = no depozit
     fuel_consumption = models.FloatField()  #
-    fuel_sort = models.ForeignKey(CarFuelSort, on_delete=models.CASCADE)
+    fuel_sort = models.ForeignKey(CarFuelSort, on_delete=models.SET_NULL, null=True, blank=True)
     year = models.IntegerField()
     distance = models.FloatField(default=0)  # 0 = new car
-    gearbox = models.ForeignKey(CarGearbox, on_delete=models.CASCADE)
+    gearbox = models.ForeignKey(CarGearbox, on_delete=models.SET_NULL, null=True, blank=True)
     engine = models.FloatField()
     colour = models.CharField(max_length=25)
-    garant = models.ForeignKey(CarGarantType, on_delete=models.CASCADE)
+    garant = models.ForeignKey(CarGarantType, on_delete=models.SET_NULL, null=True, blank=True)
     branch = models.ForeignKey(Branch, on_delete=models.SET_NULL, null=True, blank=True)
     views = models.IntegerField(default=0)
     description = models.TextField()
