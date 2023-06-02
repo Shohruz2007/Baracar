@@ -81,10 +81,10 @@ class Car(models.Model):
 
 class CarImages(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to="CarImages")
+    image = models.FileField(upload_to="CarsImages")
 
 class CarDefectImages(models.Model):
-    image = models.ImageField(upload_to="CarImages")
+    image = models.ImageField(upload_to="CarDefectImages")
 
 
 class CarDefect(models.Model):
@@ -106,3 +106,23 @@ class Comment(models.Model):
     description = models.TextField()
 
 
+class CarHistory(models.Model):
+    name = models.CharField(max_length=55)
+    position = models.ForeignKey(CarPosition, on_delete=models.CASCADE)
+    initial_price = models.FloatField(null=True, blank=True)
+    price = models.FloatField()
+    sale = models.FloatField(default=0)  # 0% = no sale
+    depozit = models.FloatField(null=True, blank=True)  # 0 = no depozit
+    fuel_consumption = models.FloatField()  #
+    fuel_sort = models.ForeignKey(CarFuelSort, on_delete=models.SET_NULL, null=True, blank=True)
+    year = models.IntegerField()
+    distance = models.FloatField(default=0)  # 0 = new car
+    gearbox = models.ForeignKey(CarGearbox, on_delete=models.SET_NULL, null=True, blank=True)
+    engine = models.FloatField()
+    colour = models.CharField(max_length=25)
+    garant = models.ForeignKey(CarGarantType, on_delete=models.SET_NULL, null=True, blank=True)
+    branch = models.ForeignKey(Branch, on_delete=models.SET_NULL, null=True, blank=True)
+    views = models.IntegerField(default=0)
+    description = models.TextField()
+    time_create = models.DateTimeField(auto_now_add=True, null=True)  # time when car has created
+    time_update = models.DateTimeField(auto_now=True)  # time when car has updated

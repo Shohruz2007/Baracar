@@ -2,6 +2,7 @@ import io
 from django.core.files.base import ContentFile
 import zipfile
 from PIL import Image
+from static import CarsImages
 
 from django.shortcuts import render
 from rest_framework import viewsets, status
@@ -69,35 +70,44 @@ class ImageAPIView(viewsets.ModelViewSet):
     permission_classes = [IsAdminUserOrReadOnly]
 
     def create(self, request, *args, **kwargs):
-        if request.data['folder']:
+        # print(request.data)
+        # if request.data['folder']:
+        #
+        #     z = zipfile.ZipFile(request.data['folder'])
+        #     for i in range(0, len(z.namelist()), 2):
+        #
+        #         file_in_zip = z.namelist()[i]
+        #         print(i)
+        #         print(file_in_zip)
+        #         if (".jpeg" in file_in_zip or ".JPEG" in file_in_zip):
+        #             data = z.read(file_in_zip)
+        #             dataEnc = io.BytesIO(data)
+        #
+        #             img = Image.open(dataEnc)
+        #             img.save(f"static/CarsImages/{file_in_zip}")
+        #
+        #             # print(CarsImages/"BMW 3-series 330I AWD Sport.jpeg")
+        #
+        #             from IPython.display import Image as IMage
+        #
+        #             image = IMage(url='static/CarsImages/BMW 3-series 330I AWD Sport.jpeg')
+        #             print(type(image))
+        #
+        #
+        #             image_data = dict(car=request.data['car'], image=image)
+        #             print(image_data)
+        #
+        #             serializer = self.get_serializer(data=image_data)
+        #             serializer.is_valid(raise_exception=True)
+        #             self.perform_create(serializer)
+        #             headers = self.get_success_headers(serializer.data)
+        #         else:
+        #             return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
 
-            z = zipfile.ZipFile(request.data['folder'])
-            for i in range(0, len(z.namelist()), 2):
-
-                file_in_zip = z.namelist()[i]
-                print(i)
-                print(file_in_zip)
-                if (".jpeg" in file_in_zip or ".JPEG" in file_in_zip):
-                    data = z.read(file_in_zip)
-                    dataEnc = io.BytesIO(data)
-                    print(dataEnc)
-
-                    img = Image.open(dataEnc)
-                    img.save(f"static/CarImages/{file_in_zip}")
-                    print(img)
-
-                    # serializer = self.get_serializer(data=request.data)
-                    # serializer.is_valid(raise_exception=True)
-                    # self.perform_create(serializer)
-                    # headers = self.get_success_headers(serializer.data)
-                    # return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-                else:
-                    return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
 
 
-
-        # if request.data['image'].size > 5 * 1024 * 1024:
-        #     return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
+        if request.data['image'].size > 5 * 1024 * 1024:
+            return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -129,6 +139,13 @@ class CarAPIView(viewsets.ModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+
+class CarHistoryAPIView(viewsets.ModelViewSet):
+    queryset = Car.objects.all()
+    serializer_class = CarHistorySerializer
+    permission_classes = [IsAdminUserOrReadOnly]
+
 
 class DefectImageAPIView(viewsets.ModelViewSet):
     queryset = CarDefectImages.objects.all()

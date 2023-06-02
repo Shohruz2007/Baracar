@@ -69,6 +69,12 @@ class CarSerializer(serializers.ModelSerializer):
         model = Car
         fields = '__all__'
 
+
+class CarHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Car
+        fields = '__all__'
+
 class CarPostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
