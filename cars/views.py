@@ -1,9 +1,3 @@
-import io
-from django.core.files.base import ContentFile
-import zipfile
-from PIL import Image
-from static import CarsImages
-
 from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.response import Response
@@ -18,31 +12,29 @@ class ModelAPIView(viewsets.ModelViewSet):
     serializer_class = ModelSerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
-class SeriesAPIView(viewsets.ModelViewSet):
+class SeriesChangeAPIView(viewsets.ModelViewSet):
+    queryset = CarSeries.objects.all()
+    serializer_class = SeriesChangeSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
+
+class SeriesAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = CarSeries.objects.all()
     serializer_class = SeriesSerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
-    def create(self, request, *args, **kwargs):
-        serializer = SeriesPostSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
-class PositionAPIView(viewsets.ModelViewSet):
+class PositionAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = CarPosition.objects.all()
     serializer_class = PositionSerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
+class PositionChangeAPIView(viewsets.ModelViewSet):
+    queryset = CarPosition.objects.all()
+    serializer_class = PositionChangeSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
 
-    def create(self, request, *args, **kwargs):
-        serializer = PositionPostSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
 
 class FuelSortAPIView(viewsets.ModelViewSet):
     queryset = CarFuelSort.objects.all()
@@ -82,7 +74,7 @@ class ImageAPIView(viewsets.ModelViewSet):
 
 
 
-class CarAPIView(viewsets.ModelViewSet):
+class CarAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
     permission_classes = [IsAdminUserOrReadOnly]
@@ -97,13 +89,10 @@ class CarAPIView(viewsets.ModelViewSet):
         car.save()
         return Response(serializer.data)
 
-
-    def create(self, request, *args, **kwargs):
-        serializer = CarPostSerializer(data=request.data)  # Use CarPostSerializer despite CarSerializer
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+class CarChangeAPIView(viewsets.ModelViewSet):
+    queryset = Car.objects.all()
+    serializer_class = CarChangeSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
 
 
 class CarHistoryAPIView(viewsets.ModelViewSet):
@@ -129,18 +118,17 @@ class DefectImageAPIView(viewsets.ModelViewSet):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
-class DefectAPIView(viewsets.ModelViewSet):
+class DefectAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = CarDefect.objects.all()
     serializer_class = DefectSerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
 
-    def create(self, request, *args, **kwargs):
-        serializer = DefectPostSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+class DefectChangeAPIView(viewsets.ModelViewSet):
+    queryset = CarDefect.objects.all()
+    serializer_class = DefectChangeSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
+
 
 
 class CommentAPIView(viewsets.ModelViewSet):

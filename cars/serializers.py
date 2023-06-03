@@ -14,7 +14,7 @@ class SeriesSerializer(serializers.ModelSerializer):
         model = CarSeries
         fields = ['id','name','model']
 
-class SeriesPostSerializer(serializers.ModelSerializer):
+class SeriesChangeSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarSeries
         fields = ['name','model']
@@ -24,14 +24,12 @@ class PositionSerializer(serializers.ModelSerializer):
     series = SeriesSerializer(read_only=True)
     class Meta:
         model = CarPosition
-        fields = ['id','name','series']
+        fields = ['id', 'name', 'series']
 
-
-
-class PositionPostSerializer(serializers.ModelSerializer):
+class PositionChangeSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarPosition
-        fields = ['name','series']
+        fields = ['name', 'series']
 
 
 
@@ -71,17 +69,17 @@ class CarSerializer(serializers.ModelSerializer):
         model = Car
         fields = '__all__'
 
+class CarChangeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Car
+        fields = '__all__'
+
+
 
 class CarHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
         fields = '__all__'
-
-class CarPostSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Car
-        fields = '__all__'
-
 
 
 class DefectImageSerializer(serializers.ModelSerializer):
@@ -96,7 +94,7 @@ class DefectSerializer(serializers.ModelSerializer):
         model = CarDefect
         fields = '__all__'
 
-class DefectPostSerializer(serializers.ModelSerializer):
+class DefectChangeSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarDefect
         fields = '__all__'
