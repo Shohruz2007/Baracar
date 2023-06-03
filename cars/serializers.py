@@ -21,10 +21,12 @@ class SeriesPostSerializer(serializers.ModelSerializer):
 
 
 class PositionSerializer(serializers.ModelSerializer):
-    series = SeriesSerializer()
+    series = SeriesSerializer(read_only=True)
     class Meta:
         model = CarPosition
         fields = ['id','name','series']
+
+
 
 class PositionPostSerializer(serializers.ModelSerializer):
     class Meta:
