@@ -33,7 +33,7 @@ class SeriesAPIView(viewsets.ModelViewSet):
 
 class PositionAPIView(viewsets.ModelViewSet):
     queryset = CarPosition.objects.all()
-    serializer_class = PositionSerializer
+    serializer_class = PositionSerializer(read_only=True)
     permission_classes = [IsAdminUserOrReadOnly]
 
 
