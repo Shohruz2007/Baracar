@@ -40,11 +40,11 @@ class ChangePasswordSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ['username', 'password', 'is_staff', 'id', 'phone', 'verify_code']
+        fields = "__all__"
+
 
 
 class AdressSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
     class Meta:
         model = Adress
         fields = '__all__'
