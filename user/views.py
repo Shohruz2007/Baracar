@@ -106,7 +106,7 @@ class ChangePasswordView(UpdateAPIView):
 class UserAPIView(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     queryset = CustomUser.objects.all()
-    http_method_names = ['get', 'put']
+    http_method_names = ['get', 'put', 'delete']
     permission_classes = [IsAuthenticated]
 
 
