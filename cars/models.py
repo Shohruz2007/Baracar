@@ -105,10 +105,10 @@ class CarImages(models.Model):
             print(img)
             print('Car_id: ', car_id)
 
-            # CarImages.objects.create()
-            saved_image = img.save(f'static/CarImages/{file_in_zip}')
+            self.image = img.save(f"static/CarImages/{file_in_zip}", format='png')
+            print('saved image: ',self.image)
             car = car_id
-            image = dict(image=saved_image, car=car)
+            image = dict(image=img, car=car)
             images.append(image)
         return images
 

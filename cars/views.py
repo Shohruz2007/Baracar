@@ -70,25 +70,22 @@ class ImageAPIView(viewsets.ModelViewSet):
 
 
         # if 'image_file' in request.data:
-        #
         #     carImg = CarImages()
         #     car_images = carImg.zip_archive(request.data['image_file'], request.data['car'])
         #     print(car_images)
         #     for object in car_images:
         #         print('Object: ', object)
-        #         validated_data['image'] = object.image
-        #         validated_data['car'] = object.car
-        #         instance = ModelClass._default_manager.create(**validated_data)
+        #         print('data: ', request.data)
+        #         # image =
+        #         request.data['image'] = object['image']
+        #         request.data['car'] = object['car']
+
 
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
-        #
-        # if 'image_file' in request.data:
-        #     imgs = CarImages.zip_archive
-        #     print(imgs, "img list ####")
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
@@ -115,7 +112,7 @@ class CarChangeAPIView(viewsets.ModelViewSet):
 
 
 class CarHistoryAPIView(viewsets.ModelViewSet):
-    queryset = Car.objects.all()
+    queryset = CarHistory.objects.all()
     serializer_class = CarHistorySerializer
     permission_classes = [IsAdminUserOrReadOnly]
 

@@ -83,7 +83,7 @@ class CarChangeSerializer(serializers.ModelSerializer):
 
 class CarHistorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = Car
+        model = CarHistory
         fields = '__all__'
 
 
