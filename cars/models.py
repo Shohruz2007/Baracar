@@ -1,6 +1,4 @@
 from io import StringIO, BytesIO
-import static
-
 from django.db import models
 
 import zipfile
