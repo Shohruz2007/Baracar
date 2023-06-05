@@ -1,4 +1,8 @@
+import traceback
+
 from rest_framework import serializers
+from rest_framework.serializers import raise_errors_on_nested_writes
+from rest_framework.utils import model_meta
 
 from user.serializers import UserSerializer
 from .models import *
@@ -56,7 +60,8 @@ class BranchSerializer(serializers.ModelSerializer):
 class CarImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarImages
-        fields = ['id', 'image', 'car']
+        fields = ['id', 'image', 'car', 'image_file']
+
 
 
 class CarSerializer(serializers.ModelSerializer):

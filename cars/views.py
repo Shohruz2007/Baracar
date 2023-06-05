@@ -63,13 +63,32 @@ class ImageAPIView(viewsets.ModelViewSet):
     permission_classes = [IsAdminUserOrReadOnly]
 
     def create(self, request, *args, **kwargs):  # limit image size
+
+
         if request.data['image'].size > 5 * 1024 * 1024:
             return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
+
+
+        # if 'image_file' in request.data:
+        #
+        #     carImg = CarImages()
+        #     car_images = carImg.zip_archive(request.data['image_file'], request.data['car'])
+        #     print(car_images)
+        #     for object in car_images:
+        #         print('Object: ', object)
+        #         validated_data['image'] = object.image
+        #         validated_data['car'] = object.car
+        #         instance = ModelClass._default_manager.create(**validated_data)
+
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
+        #
+        # if 'image_file' in request.data:
+        #     imgs = CarImages.zip_archive
+        #     print(imgs, "img list ####")
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 

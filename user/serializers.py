@@ -40,7 +40,7 @@ class ChangePasswordSerializer(serializers.Serializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ["id", "phone", "username", "is_staff", "image", "email", "birthday", "passport_series", "passport_number"]
+        fields = ["id", "phone", "username", "is_staff", "image", "email", "birthday", "passport_series", "passport_number", 'image']
 
 
 class AdressSerializer(serializers.ModelSerializer):
