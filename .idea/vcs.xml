@@ -3,5 +3,6 @@
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/django" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/welcome-to-docker" vcs="Git" />
   </component>
 </project>

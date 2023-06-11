@@ -20,7 +20,6 @@ router.register(r'cars', CarChangeAPIView, basename='cars')
 router.register(r'car_history', CarHistoryAPIView, basename='car_history')
 router.register(r'defect_get', DefectAPIView, basename='defect')
 router.register(r'defect', DefectChangeAPIView, basename='defect')
-router.register(r'defect_images', DefectImageAPIView, basename='defect_image')
 router.register(r'comment', CommentAPIView, basename='comment')
 
 urlpatterns = [

@@ -87,14 +87,7 @@ class CarHistorySerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class DefectImageSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = CarDefectImages
-        fields = '__all__'
-
 class DefectSerializer(serializers.ModelSerializer):
-    image = DefectImageSerializer(many=True)
     class Meta:
         model = CarDefect
         fields = '__all__'

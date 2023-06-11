@@ -13,6 +13,7 @@ class CustomUser(AbstractUser):
     passport_series = models.CharField(max_length=3, null=True, blank=True)
     passport_number = models.IntegerField(null=True, blank=True)
     verify_code = models.IntegerField(null=True, blank=True)
+    username = models.CharField(max_length=150)
 
     ordering = ('phone',)  # phone field is on username field's place
 

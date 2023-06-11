@@ -27,7 +27,7 @@ class SeriesAPIView(viewsets.ReadOnlyModelViewSet):
 class PositionAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = CarPosition.objects.all()
     serializer_class = PositionSerializer
-    permission_classes = [IsAdminUserOrReadOnly]
+    # permission_classes = [IsAdminUserOrReadOnly]
 
 class PositionChangeAPIView(viewsets.ModelViewSet):
     queryset = CarPosition.objects.all()
@@ -93,7 +93,7 @@ class ImageAPIView(viewsets.ModelViewSet):
 class CarAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
-    permission_classes = [IsAdminUserOrReadOnly]
+    # permission_classes = [IsAdminUserOrReadOnly]
 
 
     def retrieve(self, request, *args, **kwargs):
@@ -117,33 +117,29 @@ class CarHistoryAPIView(viewsets.ModelViewSet):
     permission_classes = [IsAdminUserOrReadOnly]
 
 
-class DefectImageAPIView(viewsets.ModelViewSet):
-    queryset = CarDefectImages.objects.all()
-    serializer_class = DefectImageSerializer
-    permission_classes = [IsAdminUserOrReadOnly]
-
-    def create(self, request, *args, **kwargs):  # limit image size
-        if request.data['image'].size > 5 * 1024 * 1024:
-            print(request.data['image'].size)
-            return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
-
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-
-        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
-
 class DefectAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = CarDefect.objects.all()
     serializer_class = DefectSerializer
-    permission_classes = [IsAdminUserOrReadOnly]
+    # permission_classes = [IsAdminUserOrReadOnly]
 
 
 class DefectChangeAPIView(viewsets.ModelViewSet):
     queryset = CarDefect.objects.all()
     serializer_class = DefectChangeSerializer
     permission_classes = [IsAdminUserOrReadOnly]
+
+
+    # def create(self, request, *args, **kwargs):  # limit image size
+    #     if request.data['image'].size > 5 * 1024 * 1024:
+    #         print(request.data['image'].size)
+    #         return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
+    #
+    #     serializer = self.get_serializer(data=request.data)
+    #     serializer.is_valid(raise_exception=True)
+    #     self.perform_create(serializer)
+    #     headers = self.get_success_headers(serializer.data)
+    #
+    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 
