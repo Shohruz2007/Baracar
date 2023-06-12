@@ -51,6 +51,11 @@ class GarantAPIView(viewsets.ModelViewSet):
     serializer_class = GarantSerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
+class EnginePlaceAPIView(viewsets.ModelViewSet):
+    queryset = CarEnginePlace.objects.all()
+    serializer_class = EnginePlaceSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
+
 class BranchAPIView(viewsets.ModelViewSet):
     queryset = Branch.objects.all()
     serializer_class = BranchSerializer

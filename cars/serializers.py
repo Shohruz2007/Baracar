@@ -57,6 +57,11 @@ class BranchSerializer(serializers.ModelSerializer):
         model = Branch
         fields = '__all__'
 
+class EnginePlaceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CarEnginePlace
+        fields = '__all__'
+
 class CarImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarImages
@@ -70,6 +75,7 @@ class CarSerializer(serializers.ModelSerializer):
     gearbox = GearBoxSerializer()
     garant = GarantSerializer()
     branch = BranchSerializer()
+    engine_place = EnginePlaceSerializer()
     class Meta:
         model = Car
         fields = '__all__'

@@ -39,6 +39,12 @@ class CarGearbox(models.Model):
     def __str__(self):
         return self.name
 
+class CarEnginePlace(models.Model):
+    name = models.CharField(max_length=55)
+
+    def __str__(self):
+        return self.name
+
 class CarGarantType(models.Model):
     name = models.CharField(max_length=55)
     time = models.IntegerField()
@@ -65,7 +71,7 @@ class Car(models.Model):
     price = models.FloatField()
     sale = models.FloatField(default=0)  # 0% = no sale
     depozit = models.FloatField(null=True, blank=True)  # 0 = no depozit
-    fuel_consumption = models.FloatField()  #
+    fuel_consumption = models.FloatField()
     fuel_sort = models.ForeignKey(CarFuelSort, on_delete=models.SET_NULL, null=True, blank=True)
     year = models.IntegerField()
     distance = models.FloatField(default=0)  # 0 = new car
@@ -79,6 +85,8 @@ class Car(models.Model):
     time_create = models.DateTimeField(auto_now_add=True, null=True)  # time when car has created
     time_update = models.DateTimeField(auto_now=True)  # time when car has updated
     is_active = models.BooleanField(default=True)  # car is on sale or not
+    engine_power = models.FloatField(null=True, blank=True)
+    engine_place = models.ForeignKey(CarEnginePlace, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name
