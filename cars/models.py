@@ -91,32 +91,32 @@ class Car(models.Model):
     def __str__(self):
         return self.name
 
-class CarImages(models.Model):
+class CarImages(models.Model): 
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
     image = models.ImageField(upload_to="CarsImages")
     image_file = models.FileField(upload_to='CarImages', null=True, blank=True)
 
 
-    def zip_archive(self, zip_file, car_id):
-        zippedImgs = zipfile.ZipFile(zip_file)
-        images = []
-        for i in range(0, len(zippedImgs.namelist()), 2):
-            print("iter", i, " ",)
+    # def zip_archive(self, zip_file, car_id):
+    #     zippedImgs = zipfile.ZipFile(zip_file)
+    #     images = []
+    #     for i in range(0, len(zippedImgs.namelist()), 2):
+    #         print("iter", i, " ",)
 
-            file_in_zip = zippedImgs.namelist()[i]
-            print("Found image: ", file_in_zip, " -- ",)
-            data = zippedImgs.read(file_in_zip)
-            dataEnc = BytesIO(data)
-            img = Image.open(dataEnc)
-            print(img)
-            print('Car_id: ', car_id)
+    #         file_in_zip = zippedImgs.namelist()[i]
+    #         print("Found image: ", file_in_zip, " -- ",)
+    #         data = zippedImgs.read(file_in_zip)
+    #         dataEnc = BytesIO(data)
+    #         img = Image.open(dataEnc)
+    #         print(img)
+    #         print('Car_id: ', car_id)
 
-            self.image = img.save(f"static/CarImages/{file_in_zip}", format='png')
-            print('saved image: ',self.image)
-            car = car_id
-            image = dict(image=img, car=car)
-            images.append(image)
-        return images
+    #         self.image = img.save(f"static/CarImages/{file_in_zip}", format='png')
+    #         print('saved image: ',self.image)
+    #         car = car_id
+    #         image = dict(image=img, car=car)
+    #         images.append(image)
+        # return images
 
 
 
