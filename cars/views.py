@@ -7,6 +7,8 @@ from baracar.permissions import IsAdminUserOrReadOnly
 from .serializers import *
 from .models import *
 
+
+
 class ModelAPIView(viewsets.ModelViewSet):
     queryset = CarModel.objects.all()
     serializer_class = ModelSerializer
@@ -20,14 +22,13 @@ class SeriesChangeAPIView(viewsets.ModelViewSet):
 class SeriesAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = CarSeries.objects.all()
     serializer_class = SeriesSerializer
-    permission_classes = [IsAdminUserOrReadOnly]
 
 
 
 class PositionAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = CarPosition.objects.all()
     serializer_class = PositionSerializer
-    # permission_classes = [IsAdminUserOrReadOnly]
+
 
 class PositionChangeAPIView(viewsets.ModelViewSet):
     queryset = CarPosition.objects.all()
@@ -60,6 +61,18 @@ class BranchAPIView(viewsets.ModelViewSet):
     queryset = Branch.objects.all()
     serializer_class = BranchSerializer
     permission_classes = [IsAdminUserOrReadOnly]
+
+
+class OrderAPIView(viewsets.ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    permission_classes = (IsAuthenticated)
+    
+class OrderChangeAPIView(viewsets.ModelViewSet):
+    queryset = Order.objects.all()
+    serializer_class = OrderChangeSerializer
+    permission_classes = (IsAuthenticated)
+
 
 
 class ImageAPIView(viewsets.ModelViewSet):
@@ -98,7 +111,7 @@ class ImageAPIView(viewsets.ModelViewSet):
 class CarAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
-    # permission_classes = [IsAdminUserOrReadOnly]
+
 
 
     def retrieve(self, request, *args, **kwargs):
@@ -125,7 +138,7 @@ class CarHistoryAPIView(viewsets.ModelViewSet):
 class DefectAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = CarDefect.objects.all()
     serializer_class = DefectSerializer
-    # permission_classes = [IsAdminUserOrReadOnly]
+
 
 
 class DefectChangeAPIView(viewsets.ModelViewSet):
@@ -134,17 +147,16 @@ class DefectChangeAPIView(viewsets.ModelViewSet):
     permission_classes = [IsAdminUserOrReadOnly]
 
 
-    # def create(self, request, *args, **kwargs):  # limit image size
-    #     if request.data['image'].size > 5 * 1024 * 1024:
-    #         print(request.data['image'].size)
-    #         return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
-    #
-    #     serializer = self.get_serializer(data=request.data)
-    #     serializer.is_valid(raise_exception=True)
-    #     self.perform_create(serializer)
-    #     headers = self.get_success_headers(serializer.data)
-    #
-    #     return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+    def create(self, request, *args, **kwargs):  # limit image size
+        if request.data['image1'].size and request.data['image2'].size > 5 * 1024 * 1024:
+            return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
+        
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+    
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 

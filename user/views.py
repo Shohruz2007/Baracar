@@ -5,7 +5,7 @@ from rest_framework.generics import CreateAPIView, UpdateAPIView
 from django.contrib.auth import get_user_model, authenticate, login
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework.permissions import IsAdminUser, IsAuthenticated
+from rest_framework.permissions import IsAdminUser, IsAuthenticated, IsAuthenticatedOrReadOnly
 from baracar.permissions import IsAdminUserOrReadOnly
 
 
@@ -113,4 +113,4 @@ class UserAPIView(viewsets.ModelViewSet):
 class AdressAPIView(viewsets.ModelViewSet):
     serializer_class = AdressSerializer
     queryset = Adress.objects.all()
-    permission_classes = [IsAdminUserOrReadOnly]  # from custom permission checking admin
+    permission_classes = (IsAuthenticatedOrReadOnly,)  # from custom permission checking admin

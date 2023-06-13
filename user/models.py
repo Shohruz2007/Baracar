@@ -14,7 +14,7 @@ class CustomUser(AbstractUser):
     passport_number = models.IntegerField(null=True, blank=True)
     verify_code = models.IntegerField(null=True, blank=True)
     username = models.CharField(max_length=150)
-    image = models.ImageField(null=True, blank=True)
+    image = models.ImageField(upload_to='UserImages',null=True, blank=True)
     
     ordering = ('phone',)  # phone field is on username field's place
 

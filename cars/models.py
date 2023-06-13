@@ -122,8 +122,8 @@ class CarImages(models.Model):
 
 class CarDefect(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
-    image1 = models.ImageField(upload_to='CarImages')
-    image2 = models.ImageField(upload_to='CarImages')
+    image1 = models.ImageField(upload_to='CarDefectImages')
+    image2 = models.ImageField(upload_to='CarDefectImages')
     description = models.TextField(null=True)
 
 class Order(models.Model):
