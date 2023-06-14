@@ -161,6 +161,7 @@ REST_FRAMEWORK = {
     ),
 }
 
+
 from datetime import timedelta
 
 SIMPLE_JWT = {
@@ -206,4 +207,4 @@ SIMPLE_JWT = {
 # CORS_ALLOW_ALL_ORIGINS: True
 CORS_ORIGIN_ALLOW_ALL = True
 
-APPEND_SLASH = False
+APPEND_SLASH = True
