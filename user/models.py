@@ -15,6 +15,7 @@ class CustomUser(AbstractUser):
     verify_code = models.IntegerField(null=True, blank=True)
     username = models.CharField(max_length=150)
     image = models.ImageField(upload_to='UserImages',null=True, blank=True)
+    date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
     
     ordering = ('phone',)  # phone field is on username field's place
 
