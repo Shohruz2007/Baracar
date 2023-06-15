@@ -19,6 +19,8 @@ class RegisterAPIView(CreateAPIView):
     permission_classes = [AllowAny]
 
 
+    
+    
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid(raise_exception=True):
@@ -26,20 +28,22 @@ class RegisterAPIView(CreateAPIView):
             data = serializer.data
             user = CustomUser(id = data['id'])
 
+            
+            
+            # from twilio.rest import Client
 
-            # from twilio.rest import Client  #sms message sending via twilio
-            #
-            # account_sid = ''
-            # auth_token = ''
+            # account_sid = 'AC787b403d46cadb54e9690b8ba98fb723'
+            # auth_token = '21e3c80e5a1a12e816c9bfaa718a6337'
             # client = Client(account_sid, auth_token)
-            #
+
             # message = client.messages.create(
-            #     from_='',
-            #     body=f"{serializer.data['verify_code']}",
-            #     to=''
+            # from_='+447782337629',
+            # body='1234',
+            # to='+998900325312'
             # )
 
             # print(message.sid)
+            
 
             return Response(self.get_tokens_for_user(user), status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
