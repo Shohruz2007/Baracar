@@ -3,6 +3,9 @@ from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
+import string
+import random
+
 from baracar.permissions import IsAdminUserOrReadOnly
 from .serializers import *
 from .models import *
@@ -86,8 +89,16 @@ class ImageAPIView(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):  # limit image size
         if request.data["image"].size > 5 * 1024 * 1024:
             return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
+        
 
-        serializer = self.get_serializer(data=request.data)
+        total = string.ascii_letters  # getting random name for image
+        generated_name = "".join(random.sample(total, 15))  
+        
+        data_copy = request.data.copy()
+        image_format = data_copy['image'].name.split('.')[-1]  #getting the format type of image
+        data_copy['image'].name = f'{generated_name}.{image_format}'
+        
+        serializer = self.get_serializer(data=data_copy)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
@@ -139,7 +150,20 @@ class DefectChangeAPIView(viewsets.ModelViewSet):
         ):
             return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
 
-        serializer = self.get_serializer(data=request.data)
+        def generate_name():
+            total = string.ascii_letters  # getting random name for image
+            generated_name = "".join(random.sample(total, 15))
+            return generated_name
+        
+        data_copy = request.data.copy()
+        image1_format = data_copy['image1'].name.split('.')[-1]  #getting the format type of image
+        image2_format = data_copy['image2'].name.split('.')[-1]  #getting the format type of image
+        
+
+        data_copy['image1'].name = f'{generate_name()}.{image1_format}'
+        data_copy['image1'].name = f'{generate_name()}.{image2_format}'
+        
+        serializer = self.get_serializer(data=data_copy)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)

@@ -17,7 +17,7 @@ class CarModel(models.Model):
 class CarSeries(models.Model):
     name = models.CharField(max_length=55)
     model = models.ForeignKey(
-        CarModel, on_delete=models.SET_NULL, null=True, blank=True
+        CarModel, on_delete=models.CASCADE,
     )
 
     def __str__(self):
@@ -27,7 +27,7 @@ class CarSeries(models.Model):
 class CarPosition(models.Model):
     name = models.CharField(max_length=55)
     series = models.ForeignKey(
-        CarSeries, on_delete=models.SET_NULL, null=True, blank=True
+        CarSeries, on_delete=models.CASCADE,
     )
 
     def __str__(self):
@@ -115,7 +115,7 @@ class Car(models.Model):
 
 class CarImages(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to="CarsImages")
+    image = models.ImageField(upload_to="CarsImages", unique=True)
     image_file = models.FileField(upload_to="CarImages", null=True, blank=True)
 
     # def zip_archive(self, zip_file, car_id):
@@ -179,6 +179,7 @@ class CarHistory(models.Model):
         CarGearbox, on_delete=models.SET_NULL, null=True, blank=True
     )
     engine = models.FloatField()
+    engine_power = models.FloatField(null=True, blank=True)
     colour = models.CharField(max_length=25)
     garant = models.ForeignKey(
         CarGarantType, on_delete=models.SET_NULL, null=True, blank=True
