@@ -15,8 +15,8 @@ router.register(r"gear_box", GearBoxAPIView, basename="gear_box")
 router.register(r"garant", GarantAPIView, basename="garant")
 router.register(r"engine_place", EnginePlaceAPIView, basename="engine_place")
 router.register(r"branch", BranchAPIView, basename="branch")
-router.register(r"order_get", OrderChangeAPIView, basename="order_get")
-router.register(r"order", OrderAPIView, basename="order")
+router.register(r"order_get", OrderAPIView, basename="order_get")
+router.register(r"order", OrderChangeAPIView, basename="order")
 router.register(r"images", ImageAPIView, basename="images")
 router.register(r"cars_get", CarAPIView, basename="cars_get")
 router.register(r"cars", CarChangeAPIView, basename="cars")
@@ -24,6 +24,7 @@ router.register(r"car_history", CarHistoryAPIView, basename="car_history")
 router.register(r"defect_get", DefectAPIView, basename="defect_get")
 router.register(r"defect", DefectChangeAPIView, basename="defect")
 router.register(r"comment", CommentAPIView, basename="comment")
+router.register(r"blank", BlankAPIView, basename="blank")
 
 urlpatterns = [
     path("", include(router.urls)),

@@ -19,13 +19,13 @@ class SeriesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CarSeries
-        fields = ["id", "name", "model"]
+        fields = "__all__"
 
 
 class SeriesChangeSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarSeries
-        fields = ["name", "model"]
+        fields = "__all__"
 
 
 class PositionSerializer(serializers.ModelSerializer):
@@ -33,13 +33,13 @@ class PositionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CarPosition
-        fields = ["id", "name", "series"]
+        fields = "__all__"
 
 
 class PositionChangeSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarPosition
-        fields = ["name", "series"]
+        fields = "__all__"
 
 
 class FuelSortSerializer(serializers.ModelSerializer):
@@ -75,7 +75,7 @@ class EnginePlaceSerializer(serializers.ModelSerializer):
 class CarImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarImages
-        fields = ["id", "image", "car", "image_file"]
+        fields = "__all__"
 
 
 class CarSerializer(serializers.ModelSerializer):
@@ -140,4 +140,10 @@ class OrderPostSerializer(serializers.ModelSerializer):
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
+        fields = "__all__"
+
+
+class BlankSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Blank
         fields = "__all__"

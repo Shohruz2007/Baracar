@@ -1,3 +1,5 @@
+import random
+import string
 from django.shortcuts import render
 from rest_framework import viewsets, status, generics
 from rest_framework.response import Response
@@ -113,6 +115,37 @@ class UserAPIView(viewsets.ModelViewSet):
     http_method_names = ['get', 'put', 'delete']
     permission_classes = [IsAuthenticated]
 
+    
+    def rename_image(self, data):
+        total = string.ascii_letters  # getting random name for image
+        generated_name = "".join(random.sample(total, 15))  
+        
+        data_copy = data.copy()
+        image_format = data_copy['image'].name.split('.')[-1]  #getting the format type of image
+        data_copy['image'].name = f'{generated_name}.{image_format}'
+        return data_copy
+    
+    def update(self, request, *args, **kwargs):
+        try: 
+            request.data['image']
+            update_data = self.rename_image(request.data)
+            
+        except:
+            
+            update_data = request.data
+            
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=update_data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
 
 class AdressAPIView(viewsets.ModelViewSet):
     serializer_class = AdressSerializer

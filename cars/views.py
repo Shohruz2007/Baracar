@@ -72,13 +72,13 @@ class BranchAPIView(viewsets.ModelViewSet):
 class OrderAPIView(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
-    permission_classes = IsAuthenticated
+    permission_classes = [IsAuthenticated]
 
 
 class OrderChangeAPIView(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderChangeSerializer
-    permission_classes = IsAuthenticated
+    permission_classes = [IsAuthenticated]
 
 
 class ImageAPIView(viewsets.ModelViewSet):
@@ -86,19 +86,23 @@ class ImageAPIView(viewsets.ModelViewSet):
     serializer_class = CarImageSerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
+    def rename_image(self, data):
+        total = string.ascii_letters  # getting random name for image
+        generated_name = "".join(random.sample(total, 15))  
+        
+        data_copy = data.copy()
+        image_format = data_copy['image'].name.split('.')[-1]  #getting the format type of image
+        data_copy['image'].name = f'{generated_name}.{image_format}'
+        return data_copy
+    
+    
     def create(self, request, *args, **kwargs):  # limit image size
         if request.data["image"].size > 5 * 1024 * 1024:
             return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
         
-
-        total = string.ascii_letters  # getting random name for image
-        generated_name = "".join(random.sample(total, 15))  
+        changed_data = self.rename_image(request.data)
         
-        data_copy = request.data.copy()
-        image_format = data_copy['image'].name.split('.')[-1]  #getting the format type of image
-        data_copy['image'].name = f'{generated_name}.{image_format}'
-        
-        serializer = self.get_serializer(data=data_copy)
+        serializer = self.get_serializer(data=changed_data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
@@ -106,6 +110,22 @@ class ImageAPIView(viewsets.ModelViewSet):
             serializer.data, status=status.HTTP_201_CREATED, headers=headers
         )
 
+    def update(self, request, *args, **kwargs):
+        
+        changed_data = self.rename_image(request.data)
+        
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=changed_data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
 
 class CarAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = Car.objects.all()
@@ -143,27 +163,32 @@ class DefectChangeAPIView(viewsets.ModelViewSet):
     serializer_class = DefectChangeSerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
+    def rename_image(self, data):
+        def generate_name():
+            total = string.ascii_letters  # getting random name for image
+            generated_name = "".join(random.sample(total, 15))
+            return generated_name
+        
+        data_copy = data.copy()
+        image1_format = data_copy['image1'].name.split('.')[-1]  #getting the format type of image
+        image2_format = data_copy['image2'].name.split('.')[-1]  #getting the format type of image
+        
+
+        data_copy['image1'].name = f'{generate_name()}.{image1_format}'
+        data_copy['image2'].name = f'{generate_name()}.{image2_format}'
+        return data_copy
+    
     def create(self, request, *args, **kwargs):  # limit image size
         if (
             request.data["image1"].size
             and request.data["image2"].size > 5 * 1024 * 1024
         ):
             return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
+        
+        changed_data = self.rename_image(request.data)
 
-        def generate_name():
-            total = string.ascii_letters  # getting random name for image
-            generated_name = "".join(random.sample(total, 15))
-            return generated_name
         
-        data_copy = request.data.copy()
-        image1_format = data_copy['image1'].name.split('.')[-1]  #getting the format type of image
-        image2_format = data_copy['image2'].name.split('.')[-1]  #getting the format type of image
-        
-
-        data_copy['image1'].name = f'{generate_name()}.{image1_format}'
-        data_copy['image1'].name = f'{generate_name()}.{image2_format}'
-        
-        serializer = self.get_serializer(data=data_copy)
+        serializer = self.get_serializer(data=changed_data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
@@ -172,8 +197,29 @@ class DefectChangeAPIView(viewsets.ModelViewSet):
             serializer.data, status=status.HTTP_201_CREATED, headers=headers
         )
 
+    def update(self, request, *args, **kwargs):
+        
+        changed_data = self.rename_image(request.data)
+        
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=changed_data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
 
 class CommentAPIView(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
     queryset = Comment.objects.all()
+    permission_classes = [IsAdminUser]
+
+class BlankAPIView(viewsets.ModelViewSet):
+    serializer_class = BlankSerializer
+    queryset = Blank.objects.all()
     permission_classes = [IsAdminUser]

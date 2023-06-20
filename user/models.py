@@ -18,6 +18,14 @@ class CustomUser(AbstractUser):
     username = models.CharField(max_length=150)
     image = models.ImageField(upload_to='UserImages',null=True, blank=True)
     date_joined = models.DateTimeField(_("date joined"), default=timezone.now)
+    is_superuser = models.BooleanField(
+        _("superuser status"),
+        default=False,
+        help_text=_(
+            "Designates that this user has all permissions without "
+            "explicitly assigning them."
+        ),
+    )
     
     ordering = ('phone',)  # phone field is on username field's place
 

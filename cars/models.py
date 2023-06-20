@@ -8,75 +8,95 @@ from user.models import CustomUser
 
 
 class CarModel(models.Model):
-    name = models.CharField(max_length=55)
-
+    name_uz = models.CharField(max_length=55)
+    name_ru = models.CharField(max_length=55)
+    
     def __str__(self):
-        return self.name
+        return self.name_uz, self.name_ru
 
 
 class CarSeries(models.Model):
-    name = models.CharField(max_length=55)
+    name_uz = models.CharField(max_length=55)
+    name_ru = models.CharField(max_length=55)
     model = models.ForeignKey(
         CarModel, on_delete=models.CASCADE,
     )
 
     def __str__(self):
-        return self.name
+        return self.name_uz, self.name_ru
 
 
 class CarPosition(models.Model):
-    name = models.CharField(max_length=55)
+    name_uz = models.CharField(max_length=55)
+    name_ru = models.CharField(max_length=55)
     series = models.ForeignKey(
         CarSeries, on_delete=models.CASCADE,
     )
 
     def __str__(self):
-        return self.name
+        return self.name_uz, self.name_ru
 
 
 class CarFuelSort(models.Model):
-    name = models.CharField(max_length=55)
+    name_uz = models.CharField(max_length=55)
+    name_ru = models.CharField(max_length=55)
 
     def __str__(self):
-        return self.name
+        return self.name_uz, self.name_ru
 
 
 class CarGearbox(models.Model):
-    name = models.CharField(max_length=55)
+    name_uz = models.CharField(max_length=55)
+    name_ru = models.CharField(max_length=55)
 
     def __str__(self):
-        return self.name
+        return self.name_uz, self.name_ru
 
 
 class CarEnginePlace(models.Model):
-    name = models.CharField(max_length=55)
+    name_uz = models.CharField(max_length=55)
+    name_ru = models.CharField(max_length=55)
 
     def __str__(self):
-        return self.name
+        return self.name_uz, self.name_ru
 
 
 class CarGarantType(models.Model):
-    name = models.CharField(max_length=55)
+    name_uz = models.CharField(max_length=55)
+    name_ru = models.CharField(max_length=55)
     time = models.IntegerField()
 
     def __str__(self):
-        return self.name
+        return self.name_uz, self.name_ru
 
 
 class Branch(models.Model):
-    name = models.CharField(max_length=55)
-    country = models.CharField(max_length=55)
-    region = models.CharField(max_length=55)
-    city = models.CharField(max_length=55)
-    district = models.CharField(max_length=55, null=True, blank=True)
-    street = models.CharField(max_length=55)
+    name_uz = models.CharField(max_length=55)
+    name_ru = models.CharField(max_length=55)
+    
+    country_uz = models.CharField(max_length=55)
+    country_ru = models.CharField(max_length=55)
+    
+    region_uz = models.CharField(max_length=55)
+    region_ru = models.CharField(max_length=55)
+    
+    city_uz = models.CharField(max_length=55)
+    city_ru = models.CharField(max_length=55)
+    
+    district_uz = models.CharField(max_length=55, null=True, blank=True)
+    district_ru = models.CharField(max_length=55, null=True, blank=True)
+    
+    street_uz = models.CharField(max_length=55)
+    street_ru = models.CharField(max_length=55)
 
     def __str__(self):
-        return self.name
+        return self.name_uz, self.name_ru
 
 
 class Car(models.Model):
-    name = models.CharField(max_length=55)
+    name_uz = models.CharField(max_length=55)
+    name_ru = models.CharField(max_length=55)
+    
     position = models.ForeignKey(CarPosition, on_delete=models.CASCADE)
     initial_price = models.FloatField(null=True, blank=True)
     price = models.FloatField()
@@ -92,13 +112,19 @@ class Car(models.Model):
         CarGearbox, on_delete=models.SET_NULL, null=True, blank=True
     )
     engine = models.FloatField()
-    colour = models.CharField(max_length=25)
+    
+    colour_uz = models.CharField(max_length=25)
+    colour_ru = models.CharField(max_length=25)
+    
     garant = models.ForeignKey(
         CarGarantType, on_delete=models.SET_NULL, null=True, blank=True
     )
     branch = models.ForeignKey(Branch, on_delete=models.SET_NULL, null=True, blank=True)
     views = models.IntegerField(default=0)
-    description = models.TextField()
+    
+    description_uz = models.TextField()
+    description_ru = models.TextField()
+    
     time_create = models.DateTimeField(
         auto_now_add=True, null=True
     )  # time when car has created
@@ -110,7 +136,7 @@ class Car(models.Model):
     )
 
     def __str__(self):
-        return self.name
+        return self.name_uz, self.name_ru
 
 
 class CarImages(models.Model):
@@ -118,33 +144,14 @@ class CarImages(models.Model):
     image = models.ImageField(upload_to="CarsImages", unique=True)
     image_file = models.FileField(upload_to="CarImages", null=True, blank=True)
 
-    # def zip_archive(self, zip_file, car_id):
-    #     zippedImgs = zipfile.ZipFile(zip_file)
-    #     images = []
-    #     for i in range(0, len(zippedImgs.namelist()), 2):
-    #         print("iter", i, " ",)
-
-    #         file_in_zip = zippedImgs.namelist()[i]
-    #         print("Found image: ", file_in_zip, " -- ",)
-    #         data = zippedImgs.read(file_in_zip)
-    #         dataEnc = BytesIO(data)
-    #         img = Image.open(dataEnc)
-    #         print(img)
-    #         print('Car_id: ', car_id)
-
-    #         self.image = img.save(f"static/CarImages/{file_in_zip}", format='png')
-    #         print('saved image: ',self.image)
-    #         car = car_id
-    #         image = dict(image=img, car=car)
-    #         images.append(image)
-    # return images
 
 
 class CarDefect(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
     image1 = models.ImageField(upload_to="CarDefectImages")
     image2 = models.ImageField(upload_to="CarDefectImages")
-    description = models.TextField(null=True)
+    description_uz = models.TextField()
+    description_ru = models.TextField()
 
 
 class Order(models.Model):
@@ -152,18 +159,22 @@ class Order(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
     time_create = models.DateTimeField(auto_now_add=True)
-    is_active = models.BooleanField(default=True)
+    visit_time = models.DateField()
+    is_active = models.BooleanField(default=False)
 
 
 class Comment(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     branch = models.ForeignKey(Branch, on_delete=models.SET_NULL, null=True, blank=True)
     time_create = models.DateTimeField(auto_now_add=True)
-    description = models.TextField()
+    description_uz = models.TextField()
+    description_ru = models.TextField()
 
 
 class CarHistory(models.Model):
-    name = models.CharField(max_length=55)
+    name_uz = models.CharField(max_length=55)
+    name_ru = models.CharField(max_length=55)
+    
     position = models.ForeignKey(CarPosition, on_delete=models.CASCADE)
     initial_price = models.FloatField(null=True, blank=True)
     price = models.FloatField()
@@ -180,14 +191,26 @@ class CarHistory(models.Model):
     )
     engine = models.FloatField()
     engine_power = models.FloatField(null=True, blank=True)
-    colour = models.CharField(max_length=25)
+    
+    colour_uz = models.CharField(max_length=25)
+    colour_ru = models.CharField(max_length=25)
+    
     garant = models.ForeignKey(
         CarGarantType, on_delete=models.SET_NULL, null=True, blank=True
     )
     branch = models.ForeignKey(Branch, on_delete=models.SET_NULL, null=True, blank=True)
     views = models.IntegerField(default=0)
-    description = models.TextField()
+    
+    description_uz = models.TextField()
+    description_ru = models.TextField()
+    
     time_create = models.DateTimeField(
         auto_now_add=True, null=True
     )  # time when car has created
     time_update = models.DateTimeField(auto_now=True)  # time when car has updated
+
+
+class Blank(models.Model):
+    title = models.CharField(max_length=155)
+    text = models.TextField()
+    time_field = models.TimeField(auto_now_add=True)
