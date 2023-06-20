@@ -76,6 +76,11 @@ class RuFuelSortSerializer(serializers.ModelSerializer):
         model = CarFuelSort
         fields = ['id','name_ru']
 
+class FuelSortChangeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CarFuelSort
+        fields = '__all__'
+
 
 class UzGearBoxSerializer(serializers.ModelSerializer):
     class Meta:
@@ -86,6 +91,11 @@ class RuGearBoxSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarGearbox
         fields = ['id','name_ru']
+
+class GearBoxChangeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CarGearbox
+        fields = '__all__'
 
 
 class UzGarantSerializer(serializers.ModelSerializer):
@@ -98,6 +108,11 @@ class RuGarantSerializer(serializers.ModelSerializer):
         model = CarGarantType
         fields = ['id','name_ru', 'time']
 
+class GarantChangeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CarGarantType
+        fields = '__all__'
+
 
 class UzBranchSerializer(serializers.ModelSerializer):
     class Meta:
@@ -109,6 +124,11 @@ class RuBranchSerializer(serializers.ModelSerializer):
         model = Branch
         fields = ['name_ru', 'country_ru', 'region_ru', 'city_ru', 'district_ru', 'street_ru']
 
+class BranchChangeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Branch
+        fields = '__all__'
+
 
 class UzEnginePlaceSerializer(serializers.ModelSerializer):
     class Meta:
@@ -119,6 +139,11 @@ class RuEnginePlaceSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarEnginePlace
         fields = ['id','name_ru']
+
+class EnginePlaceChangeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CarEnginePlace
+        fields = '__all__'
 
 
 class CarImageSerializer(serializers.ModelSerializer):

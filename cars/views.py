@@ -70,6 +70,11 @@ class RuFuelSortAPIView(viewsets.ModelViewSet):
     serializer_class = RuFuelSortSerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
+class FuelSortChangeAPIView(viewsets.ModelViewSet):
+    queryset = CarFuelSort.objects.all()
+    serializer_class = FuelSortChangeSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
+
 
 class UzGearBoxAPIView(viewsets.ModelViewSet):
     queryset = CarGearbox.objects.all()
@@ -81,14 +86,9 @@ class RuGearBoxAPIView(viewsets.ModelViewSet):
     serializer_class = RuGearBoxSerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
-class UzGearBoxAPIView(viewsets.ModelViewSet):
+class GearBoxChangeAPIView(viewsets.ModelViewSet):
     queryset = CarGearbox.objects.all()
-    serializer_class = UzGearBoxSerializer
-    permission_classes = [IsAdminUserOrReadOnly]
-
-class RuGearBoxAPIView(viewsets.ModelViewSet):
-    queryset = CarGearbox.objects.all()
-    serializer_class = RuGearBoxSerializer
+    serializer_class = GearBoxChangeSerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
 
@@ -102,6 +102,11 @@ class RuGarantAPIView(viewsets.ModelViewSet):
     serializer_class = RuGarantSerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
+class GarantChangeAPIView(viewsets.ModelViewSet):
+    queryset = CarGarantType.objects.all()
+    serializer_class = GarantChangeSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
+
 
 class UzEnginePlaceAPIView(viewsets.ModelViewSet):
     queryset = CarEnginePlace.objects.all()
@@ -113,6 +118,11 @@ class RuEnginePlaceAPIView(viewsets.ModelViewSet):
     serializer_class = RuEnginePlaceSerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
+class EnginePlaceChangeAPIView(viewsets.ModelViewSet):
+    queryset = CarEnginePlace.objects.all()
+    serializer_class = EnginePlaceChangeSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
+
 
 class UzBranchAPIView(viewsets.ModelViewSet):
     queryset = Branch.objects.all()
@@ -122,6 +132,11 @@ class UzBranchAPIView(viewsets.ModelViewSet):
 class RuBranchAPIView(viewsets.ModelViewSet):
     queryset = Branch.objects.all()
     serializer_class = RuBranchSerializer
+    permission_classes = [IsAdminUserOrReadOnly]
+
+class BranchChangeAPIView(viewsets.ModelViewSet):
+    queryset = Branch.objects.all()
+    serializer_class = BranchChangeSerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
 
