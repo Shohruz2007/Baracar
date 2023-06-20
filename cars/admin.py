@@ -1,26 +1,34 @@
 from django.contrib import admin
 from .models import *
 
-class CarSeriesAdmin(admin.TabularInline):
-    model = CarSeries
-    fields = ("name",)
+
+class CarPositionAdmin(admin.TabularInline):
+    model = CarPosition
+    fields = ("name_uz", "name_ru")
     extra = 0
 
+
+class CarSeriesAdmin(admin.TabularInline):
+    model = CarSeries
+    fields = ("name_uz", "name_ru")
+    extra = 0
+
+
+class SeriesPositionAdmin(admin.ModelAdmin):
+    inlines = [
+        CarPositionAdmin
+    ]
 
 class ModelSeriesAdmin(admin.ModelAdmin):
     inlines = [
         CarSeriesAdmin
     ]
 
-class CarSubcategory(admin.ModelAdmin):
-    inlines = [
-        CarSeriesAdmin
-    ]
 
 
 admin.site.register(Car)
 admin.site.register(CarHistory)
-admin.site.register(CarSeries)
+admin.site.register(CarSeries, SeriesPositionAdmin)
 admin.site.register(CarPosition)
 admin.site.register(CarModel, ModelSeriesAdmin)
 admin.site.register(CarFuelSort)

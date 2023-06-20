@@ -12,29 +12,31 @@ class CarModel(models.Model):
     name_ru = models.CharField(max_length=55)
     
     def __str__(self):
-        return self.name_uz, self.name_ru
+        return self.name_uz
 
 
 class CarSeries(models.Model):
     name_uz = models.CharField(max_length=55)
     name_ru = models.CharField(max_length=55)
+    
     model = models.ForeignKey(
         CarModel, on_delete=models.CASCADE,
     )
 
     def __str__(self):
-        return self.name_uz, self.name_ru
+        return self.name_uz
 
 
 class CarPosition(models.Model):
     name_uz = models.CharField(max_length=55)
     name_ru = models.CharField(max_length=55)
+    
     series = models.ForeignKey(
         CarSeries, on_delete=models.CASCADE,
     )
 
     def __str__(self):
-        return self.name_uz, self.name_ru
+        return self.name_uz
 
 
 class CarFuelSort(models.Model):
@@ -42,7 +44,7 @@ class CarFuelSort(models.Model):
     name_ru = models.CharField(max_length=55)
 
     def __str__(self):
-        return self.name_uz, self.name_ru
+        return self.name_uz
 
 
 class CarGearbox(models.Model):
@@ -50,7 +52,7 @@ class CarGearbox(models.Model):
     name_ru = models.CharField(max_length=55)
 
     def __str__(self):
-        return self.name_uz, self.name_ru
+        return self.name_uz
 
 
 class CarEnginePlace(models.Model):
@@ -58,7 +60,7 @@ class CarEnginePlace(models.Model):
     name_ru = models.CharField(max_length=55)
 
     def __str__(self):
-        return self.name_uz, self.name_ru
+        return self.name_uz
 
 
 class CarGarantType(models.Model):
@@ -67,7 +69,7 @@ class CarGarantType(models.Model):
     time = models.IntegerField()
 
     def __str__(self):
-        return self.name_uz, self.name_ru
+        return self.name_uz
 
 
 class Branch(models.Model):
@@ -90,7 +92,7 @@ class Branch(models.Model):
     street_ru = models.CharField(max_length=55)
 
     def __str__(self):
-        return self.name_uz, self.name_ru
+        return self.name_uz
 
 
 class Car(models.Model):
@@ -136,7 +138,7 @@ class Car(models.Model):
     )
 
     def __str__(self):
-        return self.name_uz, self.name_ru
+        return self.name_uz
 
 
 class CarImages(models.Model):
@@ -168,7 +170,6 @@ class Comment(models.Model):
     branch = models.ForeignKey(Branch, on_delete=models.SET_NULL, null=True, blank=True)
     time_create = models.DateTimeField(auto_now_add=True)
     description_uz = models.TextField()
-    description_ru = models.TextField()
 
 
 class CarHistory(models.Model):
