@@ -75,7 +75,7 @@ class LoginAPIView(generics.GenericAPIView):
 
     def get_tokens_for_user(self, user):  # getting JWT token and is_staff boolean
         refresh = RefreshToken.for_user(user)
-        return {'refresh': str(refresh), 'access': str(refresh.access_token), 'is_staff':user.is_staff}
+        return {'refresh': str(refresh), 'access': str(refresh.access_token), 'is_staff':user.is_staff, 'is_superuser':user.is_superuser}
 
 
 class ChangePasswordView(UpdateAPIView):
