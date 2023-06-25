@@ -169,7 +169,7 @@ class Comment(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     branch = models.ForeignKey(Branch, on_delete=models.SET_NULL, null=True, blank=True)
     time_create = models.DateTimeField(auto_now_add=True)
-    description_uz = models.TextField()
+    description = models.TextField()
 
 
 class CarHistory(models.Model):
