@@ -6,14 +6,16 @@ from .models import *
 
 
 class UzModelSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(max_length=55, source='name_uz')
     class Meta:
         model = CarModel
-        fields = ['id','name_uz']
+        fields = ['id','name']
 
 class RuModelSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(max_length=55, source='name_ru')
     class Meta:
         model = CarModel
-        fields = ['id','name_ru']
+        fields = ['id','name']
 
 class ModelChangeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -23,17 +25,17 @@ class ModelChangeSerializer(serializers.ModelSerializer):
 
 class UzSeriesSerializer(serializers.ModelSerializer):
     model = UzModelSerializer(read_only=True)
-
+    name = serializers.CharField(max_length=55, source='name_uz')
     class Meta:
         model = CarSeries
-        fields = ['id','name_uz', 'model']
+        fields = ['id','name', 'model']
         
 class RuSeriesSerializer(serializers.ModelSerializer):
     model = RuModelSerializer(read_only=True)
-
+    name = serializers.CharField(max_length=55, source='name_ru')
     class Meta:
         model = CarSeries
-        fields = ['id','name_ru', 'model']
+        fields = ['id','name', 'model']
 
 
 class SeriesChangeSerializer(serializers.ModelSerializer):
@@ -44,17 +46,17 @@ class SeriesChangeSerializer(serializers.ModelSerializer):
 
 class UzPositionSerializer(serializers.ModelSerializer):
     series = UzSeriesSerializer(read_only=True)
-
+    name = serializers.CharField(max_length=55, source='name_uz')
     class Meta:
         model = CarPosition
-        fields = ['id','name_uz', 'series']
+        fields = ['id','name', 'series']
 
 class RuPositionSerializer(serializers.ModelSerializer):
     series = RuSeriesSerializer(read_only=True)
-
+    name = serializers.CharField(max_length=55, source='name_ru')
     class Meta:
         model = CarPosition
-        fields = ['id','name_ru', 'series']
+        fields = ['id','name', 'series']
 
 
 class PositionChangeSerializer(serializers.ModelSerializer):
@@ -64,14 +66,16 @@ class PositionChangeSerializer(serializers.ModelSerializer):
 
 
 class UzFuelSortSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(max_length=55, source='name_uz')
     class Meta:
         model = CarFuelSort
-        fields = ['id','name_uz']
+        fields = ['id','name']
 
 class RuFuelSortSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(max_length=55, source='name_ru')
     class Meta:
         model = CarFuelSort
-        fields = ['id','name_ru']
+        fields = ['id','name']
 
 class FuelSortChangeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -80,14 +84,16 @@ class FuelSortChangeSerializer(serializers.ModelSerializer):
 
 
 class UzGearBoxSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(max_length=55, source='name_uz')
     class Meta:
         model = CarGearbox
-        fields = ['id','name_uz']
+        fields = ['id','name']
 
 class RuGearBoxSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(max_length=55, source='name_ru')
     class Meta:
         model = CarGearbox
-        fields = ['id','name_ru']
+        fields = ['id','name']
 
 class GearBoxChangeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -96,14 +102,16 @@ class GearBoxChangeSerializer(serializers.ModelSerializer):
 
 
 class UzGarantSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(max_length=55, source='name_uz')
     class Meta:
         model = CarGarantType
-        fields = ['id','name_uz', 'time']
+        fields = ['id','name', 'time']
 
 class RuGarantSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(max_length=55, source='name_ru')
     class Meta:
         model = CarGarantType
-        fields = ['id','name_ru', 'time']
+        fields = ['id','name', 'time']
 
 class GarantChangeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -112,14 +120,26 @@ class GarantChangeSerializer(serializers.ModelSerializer):
 
 
 class UzBranchSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(max_length=55, source='name_uz')
+    country = serializers.CharField(max_length=55, source='country_uz')
+    region = serializers.CharField(max_length=55, source='region_uz')
+    city = serializers.CharField(max_length=55, source='city_uz')
+    district = serializers.CharField(max_length=55, source='district_uz')
+    street = serializers.CharField(max_length=55, source='street_uz')
     class Meta:
         model = Branch
-        fields = ['name_uz', 'country_uz', 'region_uz', 'city_uz', 'district_uz', 'street_uz']
+        fields = ['name', 'country', 'region', 'city', 'district', 'street']
 
 class RuBranchSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(max_length=55, source='name_ru')
+    country = serializers.CharField(max_length=55, source='country_ru')
+    region = serializers.CharField(max_length=55, source='region_ru')
+    city = serializers.CharField(max_length=55, source='city_ru')
+    district = serializers.CharField(max_length=55, source='district_ru')
+    street = serializers.CharField(max_length=55, source='street_ru')
     class Meta:
         model = Branch
-        fields = ['name_ru', 'country_ru', 'region_ru', 'city_ru', 'district_ru', 'street_ru']
+        fields = ['name', 'country', 'region', 'city', 'district', 'street']
 
 class BranchChangeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -128,14 +148,16 @@ class BranchChangeSerializer(serializers.ModelSerializer):
 
 
 class UzEnginePlaceSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(max_length=55, source='name_uz')
     class Meta:
         model = CarEnginePlace
-        fields = ['id','name_uz']
+        fields = ['id','name']
 
 class RuEnginePlaceSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(max_length=55, source='name_ru')
     class Meta:
         model = CarEnginePlace
-        fields = ['id','name_ru']
+        fields = ['id','name']
 
 class EnginePlaceChangeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -150,6 +172,9 @@ class CarImageSerializer(serializers.ModelSerializer):
 
 
 class UzCarSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(max_length=55, source='name_uz')
+    description = serializers.CharField(max_length=55, source='description_uz')
+    colour = serializers.CharField(max_length=55, source='colour_uz')
     position = UzPositionSerializer()
     fuel_sort = UzFuelSortSerializer()
     gearbox = UzGearBoxSerializer()
@@ -159,9 +184,12 @@ class UzCarSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Car
-        fields = ['name_uz','position','initial_price','price','sale','depozit','fuel_consumption','fuel_sort','year','distance','gearbox','engine','colour_uz','garant','branch','views','description_uz','time_create','time_update','is_active','engine_power','engine_place']
+        fields = ['name','position','initial_price','price','sale','depozit','fuel_consumption','fuel_sort','year','distance','gearbox','engine','colour','garant','branch','views','description','time_create','time_update','is_active','engine_power','engine_place']
 
 class RuCarSerializer(serializers.ModelSerializer):
+    description = serializers.CharField(max_length=55, source='description_ru')
+    name = serializers.CharField(max_length=55, source='name_ru')
+    colour = serializers.CharField(max_length=55, source='colour_ru')
     position = RuPositionSerializer()
     fuel_sort = RuFuelSortSerializer()
     gearbox = RuGearBoxSerializer()
@@ -171,7 +199,7 @@ class RuCarSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Car
-        fields = ['name_ru','position','initial_price','price','sale','depozit','fuel_consumption','fuel_sort','year','distance','gearbox','engine','colour_ru','garant','branch','views','description_ru','time_create','time_update','is_active','engine_power','engine_place']
+        fields = ['name','position','initial_price','price','sale','depozit','fuel_consumption','fuel_sort','year','distance','gearbox','engine','colour','garant','branch','views','description','time_create','time_update','is_active','engine_power','engine_place']
 
 
 class CarChangeSerializer(serializers.ModelSerializer):
@@ -187,14 +215,16 @@ class CarHistorySerializer(serializers.ModelSerializer):
 
 
 class UzDefectSerializer(serializers.ModelSerializer):
+    description = serializers.CharField(max_length=55, source='description_uz')
     class Meta:
         model = CarDefect
-        fields = ['car','image1','image2','description_uz']
+        fields = ['car','image1','image2','description']
 
 class RuDefectSerializer(serializers.ModelSerializer):
+    description = serializers.CharField(max_length=55, source='description_ru')
     class Meta:
         model = CarDefect
-        fields = ['car','image1','image2','description_ru']
+        fields = ['car','image1','image2','description']
 
 
 class DefectChangeSerializer(serializers.ModelSerializer):
