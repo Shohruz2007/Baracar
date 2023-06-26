@@ -159,7 +159,7 @@ class OrderChangeAPIView(viewsets.ModelViewSet):
     def get_serializer_class(self):
         if self.action == 'list' or self.action == 'retrieve':
             return OrderGetSerializer
-        return serializers.Default
+        return OrderChangeSerializer
     
 class ImageAPIView(viewsets.ModelViewSet):
     queryset = CarImages.objects.all()
