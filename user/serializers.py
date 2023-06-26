@@ -42,6 +42,11 @@ class UserSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ["id", "phone", "username", "is_staff", "image", "email", "birthday", "passport_series", "passport_number", 'image', 'date_joined',  'is_superuser']
 
+class UserOnlyNameSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ["id", "username"]
+
 
 class AdressSerializer(serializers.ModelSerializer):
     class Meta:

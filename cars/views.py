@@ -155,8 +155,12 @@ class OrderChangeAPIView(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderChangeSerializer
     permission_classes = [IsAuthenticated]
-
-
+    
+    def get_serializer_class(self):
+        if self.action == 'list' or self.action == 'retrieve':
+            return OrderGetSerializer
+        return serializers.Default
+    
 class ImageAPIView(viewsets.ModelViewSet):
     queryset = CarImages.objects.all()
     serializer_class = CarImageSerializer

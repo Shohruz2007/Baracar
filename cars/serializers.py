@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from rest_framework.utils import model_meta
 
-from user.serializers import UserSerializer
+from user.serializers import UserOnlyNameSerializer, UserSerializer
 from .models import *
 
 
@@ -146,6 +146,11 @@ class BranchChangeSerializer(serializers.ModelSerializer):
         model = Branch
         fields = '__all__'
 
+class BranchMinInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Branch
+        fields = ['id', 'name_uz', 'name_ru']
+
 
 class UzEnginePlaceSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=55, source='name_uz')
@@ -207,6 +212,11 @@ class CarChangeSerializer(serializers.ModelSerializer):
         model = Car
         fields = "__all__"
 
+class CarMinInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Car
+        fields = ['id', 'name_uz', 'name_ru']
+
 
 class CarHistorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -257,11 +267,13 @@ class OrderChangeSerializer(serializers.ModelSerializer):
         model = Order
         fields = "__all__"
 
-
-class OrderPostSerializer(serializers.ModelSerializer):
+class OrderGetSerializer(serializers.ModelSerializer):
+    user = UserOnlyNameSerializer()
+    car = CarMinInfoSerializer()
+    branch = BranchMinInfoSerializer()
     class Meta:
         model = Order
-        fields = "__all__"
+        fields = ['id','user','car','branch','time_create','visit_time','is_active']
 
 
 class CommentSerializer(serializers.ModelSerializer):
