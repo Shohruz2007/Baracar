@@ -179,19 +179,21 @@ class ImageAPIView(viewsets.ModelViewSet):
     
     
     def create(self, request, *args, **kwargs):  # limit image size
-        if request.data["image"].size > 5 * 1024 * 1024:
-            return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
-        
-        changed_data = self.rename_image(request.data)
-        
-        serializer = self.get_serializer(data=changed_data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
-        return Response(
-            serializer.data, status=status.HTTP_201_CREATED, headers=headers
-        )
 
+        if "image" in request.data:
+            if request.data["image"].size > 5 * 1024 * 1024:
+                return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
+            
+            changed_data = self.rename_image(request.data)
+            
+            serializer = self.get_serializer(data=changed_data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
+            return Response(
+                serializer.data, status=status.HTTP_201_CREATED, headers=headers
+            )
+        return Response({'error':"image doestn't exist so plese enter an image type of jpeg, jpg or img"}, status=status.HTTP_204_NO_CONTENT)
     def update(self, request, *args, **kwargs):
         
         changed_data = self.rename_image(request.data)
@@ -278,23 +280,22 @@ class DefectChangeAPIView(viewsets.ModelViewSet):
         return data_copy
     
     def create(self, request, *args, **kwargs):  # limit image size
-        if (
-            request.data["image1"].size
-            and request.data["image2"].size > 5 * 1024 * 1024
-        ):
-            return Response(status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
+        if 'image1' and 'image2' in request.data:
+            if request.data["image1"].size > 5 * 1024 * 1024 and request.data["image2"].size > 5 * 1024 * 1024:
+                return Response({'error':"image size is too large, it must be no more than 5Mb!"},status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
         
-        changed_data = self.rename_image(request.data)
+            changed_data = self.rename_image(request.data)
 
-        
-        serializer = self.get_serializer(data=changed_data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        headers = self.get_success_headers(serializer.data)
+            
+            serializer = self.get_serializer(data=changed_data)
+            serializer.is_valid(raise_exception=True)
+            self.perform_create(serializer)
+            headers = self.get_success_headers(serializer.data)
 
-        return Response(
-            serializer.data, status=status.HTTP_201_CREATED, headers=headers
-        )
+            return Response(
+                serializer.data, status=status.HTTP_201_CREATED, headers=headers
+            )
+        return Response({'error':"image doestn't exist. Plese enter images type of jpeg, jpg or img"}, status=status.HTTP_204_NO_CONTENT)
 
     def update(self, request, *args, **kwargs):
         
@@ -312,6 +313,10 @@ class DefectChangeAPIView(viewsets.ModelViewSet):
             instance._prefetched_objects_cache = {}
 
         return Response(serializer.data)
+
+class CallToUserAPIView(viewsets.ModelViewSet):
+    serializer_class = CallToUserSerializer
+    queryset = CallToUser.objects.all()
 
 class CommentAPIView(viewsets.ModelViewSet):
     serializer_class = CommentSerializer

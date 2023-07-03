@@ -49,6 +49,7 @@ router_no_langual.register(r"cars", CarChangeAPIView, basename="cars")
 router_no_langual.register(r"car_history", CarHistoryAPIView, basename="car_history")
 router_no_langual.register(r"defect", DefectChangeAPIView, basename="defect")
 router_no_langual.register(r"comment", CommentAPIView, basename="comment")
+router_no_langual.register(r"calltouser", CallToUserAPIView, basename="calltouser")
 router_no_langual.register(r"blank", BlankAPIView, basename="blank")
 
 urlpatterns = [

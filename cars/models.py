@@ -161,9 +161,17 @@ class Order(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
     branch = models.ForeignKey(Branch, on_delete=models.CASCADE)
     time_create = models.DateTimeField(auto_now_add=True)
-    visit_time = models.DateField()
+    visit_time = models.DateTimeField()
     is_active = models.BooleanField(default=False)
+    message = models.TextField(null=True, blank=True)
 
+
+class CallToUser(models.Model):
+    fullname = models.CharField(max_length=60)
+    email = models.EmailField(null=True, blank=True)
+    phone_number = models.CharField(max_length=13)
+    message = models.TextField()
+    
 
 class Comment(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
