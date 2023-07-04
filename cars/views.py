@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 
 import string
 import random
+from copy import deepcopy, copy
 
 from baracar.permissions import IsAdminUserOrReadOnly
 from .serializers import *
@@ -171,11 +172,15 @@ class ImageAPIView(viewsets.ModelViewSet):
     def rename_image(self, data):
         total = string.ascii_letters  # getting random name for image
         generated_name = "".join(random.sample(total, 15))  
+
+        image_from_request = data['image']
+        car_id_from_request = data['car']
+
+        image_format = image_from_request.name.split('.')[-1]  #getting the format type of image
+        image_from_request.name = f'{generated_name()}.{image_format}'
         
-        data_copy = data.copy()
-        image_format = data_copy['image'].name.split('.')[-1]  #getting the format type of image
-        data_copy['image'].name = f'{generated_name}.{image_format}'
-        return data_copy
+        new_data = {'image':image_from_request,'car':car_id_from_request}
+        return new_data
     
     
     def create(self, request, *args, **kwargs):  # limit image size
@@ -270,18 +275,29 @@ class DefectChangeAPIView(viewsets.ModelViewSet):
             generated_name = "".join(random.sample(total, 15))
             return generated_name
         
-        data_copy = data.copy()
-        image1_format = data_copy['image1'].name.split('.')[-1]  #getting the format type of image
-        image2_format = data_copy['image2'].name.split('.')[-1]  #getting the format type of image
+        image_from_request1 = data['image1']
+        image_from_request2 = data['image2']
+        uz_description_from_request = data['description_uz']
+        ru_description_from_request = data['description_ru']
+        car_id_from_request = data['car']
+
+        
+        image1_format = image_from_request1.name.split('.')[-1]  #getting the format type of image
+        image2_format = image_from_request2.name.split('.')[-1]  #getting the format type of image
         
 
-        data_copy['image1'].name = f'{generate_name()}.{image1_format}'
-        data_copy['image2'].name = f'{generate_name()}.{image2_format}'
-        return data_copy
+        image_from_request1.name = f'{generate_name()}.{image1_format}'
+        image_from_request2.name = f'{generate_name()}.{image2_format}'
+        
+        
+        
+        new_data = {'image1':image_from_request1,'image2':image_from_request2,'description_uz':uz_description_from_request,'description_ru':ru_description_from_request,'car':car_id_from_request}
+
+        return new_data
     
     def create(self, request, *args, **kwargs):  # limit image size
         if 'image1' and 'image2' in request.data:
-            if request.data["image1"].size > 5 * 1024 * 1024 and request.data["image2"].size > 5 * 1024 * 1024:
+            if (request.data["image1"].size or request.data["image2"].size) > 5 * 1024 * 1024:
                 return Response({'error':"image size is too large, it must be no more than 5Mb!"},status=status.HTTP_413_REQUEST_ENTITY_TOO_LARGE)
         
             changed_data = self.rename_image(request.data)
