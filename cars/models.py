@@ -22,7 +22,10 @@ class CarSeries(models.Model):
     model = models.ForeignKey(
         CarModel, on_delete=models.CASCADE,
     )
-
+    
+    class Meta:
+        ordering = ['-series__position__views']
+    
     def __str__(self):
         return self.name_uz
 
@@ -32,9 +35,14 @@ class CarPosition(models.Model):
     name_ru = models.CharField(max_length=55)
     
     series = models.ForeignKey(
-        CarSeries, on_delete=models.CASCADE,
+        CarSeries, on_delete=models.CASCADE, related_name='series'
     )
 
+    
+    class Meta:
+        
+        ordering = ['-position']
+    
     def __str__(self):
         return self.name_uz
 
@@ -99,7 +107,7 @@ class Car(models.Model):
     name_uz = models.CharField(max_length=55)
     name_ru = models.CharField(max_length=55)
     
-    position = models.ForeignKey(CarPosition, on_delete=models.CASCADE)
+    position = models.ForeignKey(CarPosition, on_delete=models.CASCADE, related_name='position')
     initial_price = models.FloatField(null=True, blank=True)
     price = models.FloatField()
     sale = models.FloatField(default=0)  # 0% = no sale
@@ -137,6 +145,9 @@ class Car(models.Model):
         CarEnginePlace, on_delete=models.SET_NULL, null=True, blank=True
     )
 
+    class Meta:
+        ordering = ["-views"]
+    
     def __str__(self):
         return self.name_uz
 

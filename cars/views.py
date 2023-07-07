@@ -35,9 +35,26 @@ class SeriesChangeAPIView(viewsets.ModelViewSet):
 
 
 class UzSeriesAPIView(viewsets.ReadOnlyModelViewSet):
+    # car_model = Car.objects.all()
+    # car_series_pk_list = []
+    # for car in car_model:
+    #     print(car.position.series.id)
+    
     queryset = CarSeries.objects.all()
     serializer_class = UzSeriesSerializer
     permission_classes = [AllowAny]
+    
+    
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
 class RuSeriesAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = CarSeries.objects.all()
@@ -175,9 +192,9 @@ class ImageAPIView(viewsets.ModelViewSet):
 
         image_from_request = data['image']
         car_id_from_request = data['car']
-
+        
         image_format = image_from_request.name.split('.')[-1]  #getting the format type of image
-        image_from_request.name = f'{generated_name()}.{image_format}'
+        image_from_request.name = f'{generated_name}.{image_format}'
         
         new_data = {'image':image_from_request,'car':car_id_from_request}
         return new_data
