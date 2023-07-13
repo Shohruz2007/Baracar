@@ -1,10 +1,18 @@
+import datetime
 from io import StringIO, BytesIO
 from django.db import models
+
+import requests
+from bs4 import BeautifulSoup
 
 import zipfile
 from PIL import Image
 
 from user.models import CustomUser
+
+import environ
+env = environ.Env()
+environ.Env.read_env()
 
 
 class CarModel(models.Model):
@@ -144,10 +152,33 @@ class Car(models.Model):
     engine_place = models.ForeignKey(
         CarEnginePlace, on_delete=models.SET_NULL, null=True, blank=True
     )
+    sum_price = models.FloatField(null=True, blank=True)
 
     class Meta:
         ordering = ["-views"]
     
+        
+    def set_actual_currency(self):
+        current_date = datetime.date.today()
+        last_update_date = self.time_update.date()
+        difference = current_date - last_update_date
+        
+        if self.sum_price is None or difference.days>=1:
+            url_of_page = env("SUM_USD_CURRENCY_URL")
+            response = requests.get(url_of_page)
+
+            soup = BeautifulSoup(response.text, 'lxml')
+            
+            usd_currency = ''
+            for currancy in soup.select('.tabs-a'):
+                if currancy.select('.flag-us'):
+                    usd_currency = currancy.select('.medium-text')[1].text.replace(' ', '').split('.')[0]
+                usd_currency = round(float(usd_currency), -2)
+                self.sum_price = float(usd_currency)*self.price
+                self.save()
+            
+        return self.sum_price
+            
     def __str__(self):
         return self.name_uz
 
@@ -182,6 +213,7 @@ class CallToUser(models.Model):
     email = models.EmailField(null=True, blank=True)
     phone_number = models.CharField(max_length=13)
     message = models.TextField()
+
     
 
 class Comment(models.Model):

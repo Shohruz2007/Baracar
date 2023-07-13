@@ -15,12 +15,19 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Import .env
+
+import environ
+
+env = environ.Env()
+environ.Env.read_env()
+
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-8=le=hds7*@h0add1fbmqnu$@*la#)5+^#-1&p20o#+on@car@'
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -45,7 +52,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
 
     'corsheaders',
-    
+    'debug_toolbar',
     'django_cleanup.apps.CleanupConfig',
 ]
 
@@ -60,6 +67,7 @@ MIDDLEWARE = [
 
     'corsheaders.middleware.CorsMiddleware',
     "whitenoise.middleware.WhiteNoiseMiddleware",
+    "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = 'baracar.urls'
@@ -94,23 +102,23 @@ import os
 import dj_database_url
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
-    'default' :
-        dj_database_url.parse(os.environ.get("DATABASE_URL"))
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+    # 'default' :
+    #     dj_database_url.parse(os.environ.get("DATABASE_URL"))
 }
 
 
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'baracaru_SQL',
-#         'USER': 'baracaru_sql',
-#         'PASSWORD': 'baracarsqldatabase',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
+#         'NAME': env("NAME"),
+#         'USER': env("USER"),
+#         'PASSWORD': env("PASSWORD"),
+#         'HOST': env("HOST"),
+#         'PORT': env("PORT"),
 #     }
 # }
 
@@ -151,17 +159,19 @@ USE_TZ = True
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
-STATIC_URL = '/static/'
+STATIC_URL = '/staticfiles/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static/'),
+)
 
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
-MEDIA_URL = '/media/'
+MEDIA_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static/')
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -176,8 +186,16 @@ REST_FRAMEWORK = {
     
     # 'DEFAULT_RENDERER_CLASSES': (
     #     'rest_framework.renderers.JSONRenderer',
-    # )
+    # ),
+    
+    # 'DEFAULT_RENDERER_CLASSES': [
+    #     'rest_framework.renderers.JSONRenderer',
+    # ],
+    # 'DEFAULT_PARSER_CLASSES': [
+    #     'rest_framework.parsers.JSONParser',
+    # ],
 }
+
 
 from datetime import timedelta
 
@@ -226,3 +244,6 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 APPEND_SLASH = True
 
+INTERNAL_IPS = [
+    "127.0.0.1",
+]

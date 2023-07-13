@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework import viewsets, status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
+from rest_framework.settings import api_settings
 
 import string
 import random
@@ -10,6 +11,8 @@ from copy import deepcopy, copy
 from baracar.permissions import IsAdminUserOrReadOnly
 from .serializers import *
 from .models import *
+
+
 
 
 class UzModelAPIView(viewsets.ModelViewSet):
@@ -35,12 +38,7 @@ class SeriesChangeAPIView(viewsets.ModelViewSet):
 
 
 class UzSeriesAPIView(viewsets.ReadOnlyModelViewSet):
-    # car_model = Car.objects.all()
-    # car_series_pk_list = []
-    # for car in car_model:
-    #     print(car.position.series.id)
-    
-    queryset = CarSeries.objects.all()
+    queryset = CarSeries.objects.select_related('model').all()
     serializer_class = UzSeriesSerializer
     permission_classes = [AllowAny]
     
@@ -57,18 +55,18 @@ class UzSeriesAPIView(viewsets.ReadOnlyModelViewSet):
         return Response(serializer.data)
 
 class RuSeriesAPIView(viewsets.ReadOnlyModelViewSet):
-    queryset = CarSeries.objects.all()
+    queryset = CarSeries.objects.select_related('model').all()
     serializer_class = RuSeriesSerializer
     permission_classes = [AllowAny]
 
 
 class UzPositionAPIView(viewsets.ReadOnlyModelViewSet):
-    queryset = CarPosition.objects.all()
+    queryset = CarPosition.objects.select_related('series').select_related('series__model').all()
     serializer_class = UzPositionSerializer
     permission_classes = [AllowAny]
 
 class RuPositionAPIView(viewsets.ReadOnlyModelViewSet):
-    queryset = CarPosition.objects.all()
+    queryset = CarPosition.objects.select_related('series').select_related('series__model').all()
     serializer_class = RuPositionSerializer
     permission_classes = [AllowAny]
 
@@ -78,12 +76,12 @@ class PositionChangeAPIView(viewsets.ModelViewSet):
     permission_classes = [IsAdminUserOrReadOnly]
 
 
-class UzFuelSortAPIView(viewsets.ModelViewSet):
+class UzFuelSortAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = CarFuelSort.objects.all()
     serializer_class = UzFuelSortSerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
-class RuFuelSortAPIView(viewsets.ModelViewSet):
+class RuFuelSortAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = CarFuelSort.objects.all()
     serializer_class = RuFuelSortSerializer
     permission_classes = [IsAdminUserOrReadOnly]
@@ -94,12 +92,12 @@ class FuelSortChangeAPIView(viewsets.ModelViewSet):
     permission_classes = [IsAdminUserOrReadOnly]
 
 
-class UzGearBoxAPIView(viewsets.ModelViewSet):
+class UzGearBoxAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = CarGearbox.objects.all()
     serializer_class = UzGearBoxSerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
-class RuGearBoxAPIView(viewsets.ModelViewSet):
+class RuGearBoxAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = CarGearbox.objects.all()
     serializer_class = RuGearBoxSerializer
     permission_classes = [IsAdminUserOrReadOnly]
@@ -110,12 +108,12 @@ class GearBoxChangeAPIView(viewsets.ModelViewSet):
     permission_classes = [IsAdminUserOrReadOnly]
 
 
-class UzGarantAPIView(viewsets.ModelViewSet):
+class UzGarantAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = CarGarantType.objects.all()
     serializer_class = UzGarantSerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
-class RuGarantAPIView(viewsets.ModelViewSet):
+class RuGarantAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = CarGarantType.objects.all()
     serializer_class = RuGarantSerializer
     permission_classes = [IsAdminUserOrReadOnly]
@@ -126,12 +124,12 @@ class GarantChangeAPIView(viewsets.ModelViewSet):
     permission_classes = [IsAdminUserOrReadOnly]
 
 
-class UzEnginePlaceAPIView(viewsets.ModelViewSet):
+class UzEnginePlaceAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = CarEnginePlace.objects.all()
     serializer_class = UzEnginePlaceSerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
-class RuEnginePlaceAPIView(viewsets.ModelViewSet):
+class RuEnginePlaceAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = CarEnginePlace.objects.all()
     serializer_class = RuEnginePlaceSerializer
     permission_classes = [IsAdminUserOrReadOnly]
@@ -142,12 +140,12 @@ class EnginePlaceChangeAPIView(viewsets.ModelViewSet):
     permission_classes = [IsAdminUserOrReadOnly]
 
 
-class UzBranchAPIView(viewsets.ModelViewSet):
+class UzBranchAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = Branch.objects.all()
     serializer_class = UzBranchSerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
-class RuBranchAPIView(viewsets.ModelViewSet):
+class RuBranchAPIView(viewsets.ReadOnlyModelViewSet):
     queryset = Branch.objects.all()
     serializer_class = RuBranchSerializer
     permission_classes = [IsAdminUserOrReadOnly]
@@ -158,14 +156,14 @@ class BranchChangeAPIView(viewsets.ModelViewSet):
     permission_classes = [IsAdminUserOrReadOnly]
 
 
-class UzOrderAPIView(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
-    serializer_class = UzOrderSerializer
+class UzOrderAPIView(viewsets.ReadOnlyModelViewSet):
+    queryset = Order.objects.select_related('user').select_related('car').select_related('branch').all()
+    serializer_class = OrderGetSerializer
     permission_classes = [IsAuthenticated]
 
-class RuOrderAPIView(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
-    serializer_class = RuOrderSerializer
+class RuOrderAPIView(viewsets.ReadOnlyModelViewSet):
+    queryset = Order.objects.select_related('user').select_related('car').select_related('branch').all()
+    serializer_class = OrderGetSerializer
     permission_classes = [IsAuthenticated]
 
 
@@ -216,6 +214,7 @@ class ImageAPIView(viewsets.ModelViewSet):
                 serializer.data, status=status.HTTP_201_CREATED, headers=headers
             )
         return Response({'error':"image doestn't exist so plese enter an image type of jpeg, jpg or img"}, status=status.HTTP_204_NO_CONTENT)
+    
     def update(self, request, *args, **kwargs):
         
         changed_data = self.rename_image(request.data)
@@ -233,9 +232,24 @@ class ImageAPIView(viewsets.ModelViewSet):
 
         return Response(serializer.data)
 
+
+
 class UzCarAPIView(viewsets.ReadOnlyModelViewSet):
-    queryset = Car.objects.all()
+    queryset = Car.objects.select_related('garant').select_related('position').select_related('fuel_sort').select_related('branch').select_related('engine_place').select_related('position__series').select_related('position__series__model').select_related('gearbox').all()
     serializer_class = UzCarSerializer
+
+    
+    def list(self, request, *args, **kwargs):
+        if 'currency_reload' in request.query_params:
+            queryset = self.filter_queryset(self.get_queryset())
+            for car_obj in queryset:
+                car_obj.set_actual_currency()
+
+        queryset = self.filter_queryset(self.get_queryset())
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -247,9 +261,21 @@ class UzCarAPIView(viewsets.ReadOnlyModelViewSet):
         return Response(serializer.data)
 
 class RuCarAPIView(viewsets.ReadOnlyModelViewSet):
-    queryset = Car.objects.all()
+    queryset = Car.objects.select_related('garant').select_related('position').select_related('fuel_sort').select_related('branch').select_related('engine_place').select_related('position__series').select_related('position__series__model').select_related('gearbox').all()
     serializer_class = RuCarSerializer
 
+    
+    def list(self, request, *args, **kwargs):
+        if 'currency_reload' in request.query_params:
+            queryset = self.filter_queryset(self.get_queryset())
+            for car_obj in queryset:
+                car_obj.set_actual_currency()
+
+        queryset = self.filter_queryset(self.get_queryset())
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+    
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
@@ -263,9 +289,25 @@ class RuCarAPIView(viewsets.ReadOnlyModelViewSet):
 class CarChangeAPIView(viewsets.ModelViewSet):
     queryset = Car.objects.all()
     serializer_class = CarChangeSerializer
-    permission_classes = [IsAdminUserOrReadOnly]
+    # permission_classes = [IsAdminUserOrReadOnly]
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
+    def perform_create(self, serializer):
+        data = serializer.save()
+        data.set_actual_currency()
+
+    def get_success_headers(self, data):
+        try:
+            return {'Location': str(data[api_settings.URL_FIELD_NAME])}
+        except (TypeError, KeyError):
+            return {}
+    
 class CarHistoryAPIView(viewsets.ModelViewSet):
     queryset = CarHistory.objects.all()
     serializer_class = CarHistorySerializer
@@ -273,11 +315,11 @@ class CarHistoryAPIView(viewsets.ModelViewSet):
 
 
 class UzDefectAPIView(viewsets.ReadOnlyModelViewSet):
-    queryset = CarDefect.objects.all()
+    queryset = CarDefect.objects.select_related('car').all()
     serializer_class = UzDefectSerializer
 
 class RuDefectAPIView(viewsets.ReadOnlyModelViewSet):
-    queryset = CarDefect.objects.all()
+    queryset = CarDefect.objects.select_related('car').all()
     serializer_class = RuDefectSerializer
 
 

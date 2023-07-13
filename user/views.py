@@ -150,4 +150,4 @@ class UserAPIView(viewsets.ModelViewSet):
 class AdressAPIView(viewsets.ModelViewSet):
     serializer_class = AdressSerializer
     queryset = Adress.objects.all()
-    permission_classes = (IsAuthenticatedOrReadOnly,)  # from custom permission checking admin
+    permission_classes = (IsAuthenticatedOrReadOnly,)  

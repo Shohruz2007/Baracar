@@ -10,12 +10,14 @@ class UzModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarModel
         fields = ['id','name']
+        read_only_fields = fields
 
 class RuModelSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=55, source='name_ru')
     class Meta:
         model = CarModel
         fields = ['id','name']
+        read_only_fields = fields
 
 class ModelChangeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -29,6 +31,7 @@ class UzSeriesSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarSeries
         fields = ['id','name', 'model']
+        read_only_fields = fields
         
 class RuSeriesSerializer(serializers.ModelSerializer):
     model = RuModelSerializer(read_only=True)
@@ -36,7 +39,7 @@ class RuSeriesSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarSeries
         fields = ['id','name', 'model']
-
+        read_only_fields = fields
 
 class SeriesChangeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -50,6 +53,7 @@ class UzPositionSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarPosition
         fields = ['id','name', 'series']
+        read_only_fields = fields
 
 class RuPositionSerializer(serializers.ModelSerializer):
     series = RuSeriesSerializer(read_only=True)
@@ -57,7 +61,7 @@ class RuPositionSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarPosition
         fields = ['id','name', 'series']
-
+        read_only_fields = fields
 
 class PositionChangeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -70,12 +74,14 @@ class UzFuelSortSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarFuelSort
         fields = ['id','name']
+        read_only_fields = fields
 
 class RuFuelSortSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=55, source='name_ru')
     class Meta:
         model = CarFuelSort
         fields = ['id','name']
+        read_only_fields = fields
 
 class FuelSortChangeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -88,12 +94,14 @@ class UzGearBoxSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarGearbox
         fields = ['id','name']
+        read_only_fields = fields
 
 class RuGearBoxSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=55, source='name_ru')
     class Meta:
         model = CarGearbox
         fields = ['id','name']
+        read_only_fields = fields
 
 class GearBoxChangeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -106,12 +114,14 @@ class UzGarantSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarGarantType
         fields = ['id','name', 'time']
+        read_only_fields = fields
 
 class RuGarantSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=55, source='name_ru')
     class Meta:
         model = CarGarantType
         fields = ['id','name', 'time']
+        read_only_fields = fields
 
 class GarantChangeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -129,6 +139,7 @@ class UzBranchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Branch
         fields = ['id','name', 'country', 'region', 'city', 'district', 'street']
+        read_only_fields = fields
 
 class RuBranchSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=55, source='name_ru')
@@ -140,6 +151,7 @@ class RuBranchSerializer(serializers.ModelSerializer):
     class Meta:
         model = Branch
         fields = ['id','name', 'country', 'region', 'city', 'district', 'street']
+        read_only_fields = fields
 
 class BranchChangeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -150,6 +162,7 @@ class BranchMinInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Branch
         fields = ['id', 'name_uz', 'name_ru']
+        read_only_fields = fields
 
 
 class UzEnginePlaceSerializer(serializers.ModelSerializer):
@@ -157,12 +170,14 @@ class UzEnginePlaceSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarEnginePlace
         fields = ['id','name']
+        read_only_fields = fields
 
 class RuEnginePlaceSerializer(serializers.ModelSerializer):
     name = serializers.CharField(max_length=55, source='name_ru')
     class Meta:
         model = CarEnginePlace
         fields = ['id','name']
+        read_only_fields = fields
 
 class EnginePlaceChangeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -189,7 +204,8 @@ class UzCarSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Car
-        fields = ['id','name','position','initial_price','price','sale','depozit','fuel_consumption','fuel_sort','year','distance','gearbox','engine','colour','garant','branch','views','description','time_create','time_update','is_active','engine_power','engine_place']
+        fields = ['id','name','position','initial_price','price','sum_price','sale','depozit','fuel_consumption','fuel_sort','year','distance','gearbox','engine','colour','garant','branch','views','description','time_create','time_update','is_active','engine_power','engine_place']
+        read_only_fields = fields
 
 class RuCarSerializer(serializers.ModelSerializer):
     description = serializers.CharField(max_length=55, source='description_ru')
@@ -204,18 +220,20 @@ class RuCarSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Car
-        fields = ['id','name','position','initial_price','price','sale','depozit','fuel_consumption','fuel_sort','year','distance','gearbox','engine','colour','garant','branch','views','description','time_create','time_update','is_active','engine_power','engine_place']
-
+        fields = ['id','name','position','initial_price','price','sum_price','sale','depozit','fuel_consumption','fuel_sort','year','distance','gearbox','engine','colour','garant','branch','views','description','time_create','time_update','is_active','engine_power','engine_place']
+        read_only_fields = fields
 
 class CarChangeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
         fields = "__all__"
-
+        
 class CarMinInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
         fields = ['id', 'name_uz', 'name_ru']
+        read_only_fields = fields
+
 
 
 class CarHistorySerializer(serializers.ModelSerializer):
@@ -229,36 +247,18 @@ class UzDefectSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarDefect
         fields = ['id','car','image1','image2','description']
+        read_only_fields = fields
 
 class RuDefectSerializer(serializers.ModelSerializer):
     description = serializers.CharField(max_length=55, source='description_ru')
     class Meta:
         model = CarDefect
         fields = ['id','car','image1','image2','description']
-
+        read_only_fields = fields
 
 class DefectChangeSerializer(serializers.ModelSerializer):
     class Meta:
         model = CarDefect
-        fields = "__all__"
-
-
-class UzOrderSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
-    car = UzCarSerializer()
-    branch = UzBranchSerializer()
-
-    class Meta:
-        model = Order
-        fields = "__all__"
-
-class RuOrderSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
-    car = RuCarSerializer()
-    branch = RuBranchSerializer()
-
-    class Meta:
-        model = Order
         fields = "__all__"
 
 
@@ -274,6 +274,7 @@ class OrderGetSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['id','user','car','branch','time_create','visit_time','is_active','message']
+        read_only_fields = fields
 
 
 class CallToUserSerializer(serializers.ModelSerializer):
