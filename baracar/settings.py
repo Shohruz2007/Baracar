@@ -27,7 +27,7 @@ environ.Env.read_env()
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("SECRET_KEY")
+SECRET_KEY = 'django-insecure-8=le=hds7*@h0add1fbmqnu$@*la#)5+^#-1&p20o#+on@car@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -107,7 +107,7 @@ DATABASES = {
     #     'NAME': BASE_DIR / 'db.sqlite3',
     # }
     'default' :
-        dj_database_url.parse(env("DATABASE_URL"))
+        dj_database_url.parse('postgres://baracar_g848_user:3SxBbmxx1w8Rozy1SltipvCF71tjfBCr@dpg-ckj4qlolk5ic73c6pu6g-a.oregon-postgres.render.com/baracar_g848')
 }
 
 
