@@ -266,3 +266,10 @@ class Blank(models.Model):
     title = models.CharField(max_length=155)
     text = models.TextField()
     time_field = models.TimeField(auto_now_add=True)
+
+class Liked(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    car = models.ForeignKey(Car, on_delete=models.CASCADE)
+    
+    class Meta:
+        unique_together = ['car', 'user']

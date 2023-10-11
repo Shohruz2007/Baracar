@@ -7,6 +7,7 @@ from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
+
 class CustomUser(AbstractUser):
     image = models.ImageField(upload_to='Users', null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
@@ -26,7 +27,8 @@ class CustomUser(AbstractUser):
             "explicitly assigning them."
         ),
     )
-    
+
+
     ordering = ('phone',)  # phone field is on username field's place
 
     REQUIRED_FIELDS = ['username']  # for creating superuser

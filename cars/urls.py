@@ -51,6 +51,7 @@ router_no_langual.register(r"defect", DefectChangeAPIView, basename="defect")
 router_no_langual.register(r"comment", CommentAPIView, basename="comment")
 router_no_langual.register(r"calltouser", CallToUserAPIView, basename="calltouser")
 router_no_langual.register(r"blank", BlankAPIView, basename="blank")
+router_no_langual.register(r"likes", LikedAPIView, basename="likes")
 
 urlpatterns = [
     path("", include(router_no_langual.urls)),

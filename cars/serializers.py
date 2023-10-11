@@ -227,7 +227,7 @@ class CarChangeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
         fields = "__all__"
-        
+
 class CarMinInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Car
@@ -291,4 +291,10 @@ class CommentSerializer(serializers.ModelSerializer):
 class BlankSerializer(serializers.ModelSerializer):
     class Meta:
         model = Blank
+        fields = "__all__"
+
+
+class LikesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Liked
         fields = "__all__"

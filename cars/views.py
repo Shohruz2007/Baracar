@@ -307,6 +307,52 @@ class CarChangeAPIView(viewsets.ModelViewSet):
             return {'Location': str(data[api_settings.URL_FIELD_NAME])}
         except (TypeError, KeyError):
             return {}
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', True)
+        instance = self.get_object()
+
+        new_data = request.data.copy()
+
+
+        if 'liked_users' in request.data:
+            if request.data['liked_users']=='' or request.data['liked_users'] is None or request.data['liked_users'].lower()=='none':
+
+                del new_data['liked_users']
+                instance.liked_users.clear()
+
+            else:
+                user_pks = request.data['liked_users'].split()
+                new_data['liked_users'] = int(user_pks[0])
+
+                request_pk_list = []
+
+                for i in user_pks:
+                    request_pk_list.append(int(i))
+
+
+                for i in instance.liked_users.all():
+                    if i.pk in request_pk_list:
+                        request_pk_list.remove(i.pk)
+                        continue
+                    request_pk_list.append(i.pk)
+
+
+                del new_data['liked_users']
+                instance.liked_users.clear()
+
+                for i in request_pk_list:
+                    new_data.update({'liked_users':i})
+
+
+        serializer = self.get_serializer(instance, data=new_data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        if getattr(instance, '_prefetched_objects_cache', None):
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
     
 class CarHistoryAPIView(viewsets.ModelViewSet):
     queryset = CarHistory.objects.all()
@@ -402,3 +448,19 @@ class BlankAPIView(viewsets.ModelViewSet):
     serializer_class = BlankSerializer
     queryset = Blank.objects.all()
     permission_classes = [IsAdminUser]
+
+class LikedAPIView(viewsets.ModelViewSet):
+    serializer_class = LikesSerializer
+    queryset = Liked.objects.all()
+    permission_classes = (AllowAny,)
+
+    
+    def create(self, request, *args, **kwargs):
+        new_data = request.data.copy()
+        new_data.update({'user':request.user.id})
+        print(new_data)
+        serializer = self.get_serializer(data=new_data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
