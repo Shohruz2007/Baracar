@@ -102,18 +102,18 @@ import os
 import dj_database_url
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': BASE_DIR / 'db.sqlite3',
-    # }
+#     # 'default': {
+#     #     'ENGINE': 'django.db.backends.sqlite3',
+#     #     'NAME': BASE_DIR / 'db.sqlite3',
+#     # }
     'default' :
-        dj_database_url.parse('postgres://baracar_g848_user:3SxBbmxx1w8Rozy1SltipvCF71tjfBCr@dpg-ckj4qlolk5ic73c6pu6g-a.oregon-postgres.render.com/baracar_g848')
+        dj_database_url.parse(env('DATABASE_URL'))
 }
 
 
 # DATABASES = {
 #     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME': env("NAME"),
 #         'USER': env("USER"),
 #         'PASSWORD': env("PASSWORD"),
